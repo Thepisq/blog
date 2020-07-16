@@ -1,13 +1,15 @@
 package com.zbnetwork.blog.app.DTO;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import javax.annotation.Generated;
+import lombok.NoArgsConstructor;
 
 /**
  * @author 13496
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO{
     private Integer id;
 

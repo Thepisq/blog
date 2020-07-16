@@ -1,8 +1,15 @@
 package com.zbnetwork.blog.app.DO;
 
-import java.util.Date;
-import javax.annotation.Generated;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import javax.annotation.Generated;
+import java.util.Date;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class Blog {
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9623934+08:00", comments="Source field: blog.id")
     private Integer id;

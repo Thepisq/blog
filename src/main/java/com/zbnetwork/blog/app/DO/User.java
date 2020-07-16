@@ -1,7 +1,14 @@
 package com.zbnetwork.blog.app.DO;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.annotation.Generated;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class User{
     @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.980346+08:00", comments="Source field: user.id")
     private Integer id;

@@ -21,6 +21,7 @@ import java.util.Collection;
 public class HomeController {
     @GetMapping(value = {"/","/index"})
     public String index(Model model){
+        //获取当前用户信息并带回页面
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Collection<GrantedAuthority> authorityCollection = (Collection<GrantedAuthority>) auth.getAuthorities();
         model.addAttribute("authorities", authorityCollection.toString());
@@ -35,21 +36,22 @@ public class HomeController {
 
     @GetMapping("/regsister")
     public String register(){
-        return "register";
+        return null;
     }
 
     @GetMapping("/editor")
     public String editor(){
-        return "editor";
+        return null;
     }
 
     @GetMapping("/error")
     public String error() {
-        return "403";
+        return "error/403";
     }
 
     @RequestMapping("/user")
     public String user(@AuthenticationPrincipal Principal principal, Model model){
+        //获取当前用户信息并带回页面
         model.addAttribute("username", principal.getName());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Collection<GrantedAuthority> authorityCollection = (Collection<GrantedAuthority>) auth.getAuthorities();
@@ -58,6 +60,7 @@ public class HomeController {
     }
     @RequestMapping("/admin")
     public String admin(@AuthenticationPrincipal Principal principal, Model model){
+        //获取当前用户信息并带回页面
         model.addAttribute("username", principal.getName());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Collection<GrantedAuthority> authorityCollection = (Collection<GrantedAuthority>) auth.getAuthorities();

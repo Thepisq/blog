@@ -1,21 +1,7 @@
 package com.zbnetwork.blog.app.mapper;
 
-import static com.zbnetwork.blog.app.mapper.UserDynamicSqlSupport.*;
-import static org.mybatis.dynamic.sql.SqlBuilder.*;
-
 import com.zbnetwork.blog.app.DO.User;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-import javax.annotation.Generated;
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.dynamic.sql.BasicColumn;
 import org.mybatis.dynamic.sql.delete.DeleteDSLCompleter;
@@ -33,50 +19,62 @@ import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
 import org.springframework.stereotype.Component;
 
-@Mapper @Component
+import javax.annotation.Generated;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import static com.zbnetwork.blog.app.mapper.UserDynamicSqlSupport.*;
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
+
+@Mapper
+@Component
 public interface UserMapper {
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9823406+08:00", comments="Source Table: user")
+    @Select("select * from user where username = #{username}")
+    User selectByUsername(@Param("username") String username);
+
+    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-16T13:36:17.9823406+08:00", comments = "Source Table: user")
     BasicColumn[] selectList = BasicColumn.columnList(id, username, password, phone, email, introduction, roles);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9813428+08:00", comments="Source Table: user")
-    @SelectProvider(type=SqlProviderAdapter.class, method="select")
+    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-16T13:36:17.9813428+08:00", comments = "Source Table: user")
+    @SelectProvider(type = SqlProviderAdapter.class, method = "select")
     long count(SelectStatementProvider selectStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9813428+08:00", comments="Source Table: user")
-    @DeleteProvider(type=SqlProviderAdapter.class, method="delete")
+    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-16T13:36:17.9813428+08:00", comments = "Source Table: user")
+    @DeleteProvider(type = SqlProviderAdapter.class, method = "delete")
     int delete(DeleteStatementProvider deleteStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9813428+08:00", comments="Source Table: user")
-    @InsertProvider(type=SqlProviderAdapter.class, method="insert")
+    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-16T13:36:17.9813428+08:00", comments = "Source Table: user")
+    @InsertProvider(type = SqlProviderAdapter.class, method = "insert")
     int insert(InsertStatementProvider<User> insertStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9813428+08:00", comments="Source Table: user")
-    @InsertProvider(type=SqlProviderAdapter.class, method="insertMultiple")
+    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-16T13:36:17.9813428+08:00", comments = "Source Table: user")
+    @InsertProvider(type = SqlProviderAdapter.class, method = "insertMultiple")
     int insertMultiple(MultiRowInsertStatementProvider<User> multipleInsertStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9813428+08:00", comments="Source Table: user")
-    @SelectProvider(type=SqlProviderAdapter.class, method="select")
+    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-16T13:36:17.9813428+08:00", comments = "Source Table: user")
+    @SelectProvider(type = SqlProviderAdapter.class, method = "select")
     @ResultMap("UserResult")
     Optional<User> selectOne(SelectStatementProvider selectStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9813428+08:00", comments="Source Table: user")
-    @SelectProvider(type=SqlProviderAdapter.class, method="select")
-    @Results(id="UserResult", value = {
-        @Result(column="id", property="id", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="username", property="username", jdbcType=JdbcType.VARCHAR),
-        @Result(column="password", property="password", jdbcType=JdbcType.VARCHAR),
-        @Result(column="phone", property="phone", jdbcType=JdbcType.VARCHAR),
-        @Result(column="email", property="email", jdbcType=JdbcType.VARCHAR),
-        @Result(column="introduction", property="introduction", jdbcType=JdbcType.VARCHAR),
-        @Result(column="roles", property="roles", jdbcType=JdbcType.VARCHAR)
+    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-16T13:36:17.9813428+08:00", comments = "Source Table: user")
+    @SelectProvider(type = SqlProviderAdapter.class, method = "select")
+    @Results(id = "UserResult", value = {
+            @Result(column = "id", property = "id", jdbcType = JdbcType.INTEGER, id = true),
+            @Result(column = "username", property = "username", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "password", property = "password", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "phone", property = "phone", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "email", property = "email", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "introduction", property = "introduction", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "roles", property = "roles", jdbcType = JdbcType.VARCHAR)
     })
     List<User> selectMany(SelectStatementProvider selectStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9813428+08:00", comments="Source Table: user")
-    @UpdateProvider(type=SqlProviderAdapter.class, method="update")
+    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-16T13:36:17.9813428+08:00", comments = "Source Table: user")
+    @UpdateProvider(type = SqlProviderAdapter.class, method = "update")
     int update(UpdateStatementProvider updateStatement);
 
-    @Generated(value="org.mybatis.generator.api.MyBatisGenerator", date="2020-07-16T13:36:17.9823406+08:00", comments="Source Table: user")
+    @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-16T13:36:17.9823406+08:00", comments = "Source Table: user")
     default long count(CountDSLCompleter completer) {
         return MyBatis3Utils.countFrom(this::count, user, completer);
     }

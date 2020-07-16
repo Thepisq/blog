@@ -2,7 +2,7 @@ pageSize: 20
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://localhost:3306/blog?useSSL=false
+      url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
       username: root
       password: root
   thymeleaf:
@@ -26,3 +26,9 @@ pagehelper:
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
+logging:
+  file:
+    path: classpath:/log
+    name: blog.log
+  level:
+    root: debug

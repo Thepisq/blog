@@ -20,13 +20,13 @@ public class BackdoorAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
-
-        if(name.equals("test")) {
+        //使登录名为 test 的用户(无需验证密码的对错)添加以下信息
+        if ("test".equals(name)) {
             Collection<GrantedAuthority> authorityCollection = new ArrayList<>();
             authorityCollection.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             authorityCollection.add(new SimpleGrantedAuthority("ROLE_USER"));
-            return new UsernamePasswordAuthenticationToken("admin", password, authorityCollection);
-        }else {
+            return new UsernamePasswordAuthenticationToken("隐藏BOSS", password, authorityCollection);
+        } else {
             return null;
         }
     }
