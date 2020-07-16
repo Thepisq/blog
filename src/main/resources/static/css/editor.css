@@ -1,0 +1,12 @@
+#editormodaldialog{
+    padding: 20px;
+    height: 500px;
+    margin: 0 auto;
+    width: 700px;
+ }
+#editormodalcontent{
+
+}
+#articleEditor{
+    margin-top: 5px;
+}

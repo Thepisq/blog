@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title th:text="(${lor} eq 'log') ? ('登录'):('注册')"></title>
+    <!-- bootstrap -->
+    <script type="text/javascript" th:src="@{../js/jquery-3.2.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{../bootstrap-3.3.7-dist/js/bootstrap.min.js}" ></script>
+    <link rel="stylesheet" th:href="@{../bootstrap-3.3.7-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{../css/user.css}">
+</head>
+<body>
+
+<div id="top" th:include="top::navigation"></div>
+<div id="mainbox">
+<div id="page" th:text="${page}" hidden></div>
+<div th:if="${lor} eq 'log'">
+<form id="logform" method="post" onsubmit="return false">
+    <div id="log_main">
+        <div class="form_title">登录</div>
+        <!--提示框-->
+        <div id="logAlert1" class="alert alert-success hide" >
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>登录成功。</strong>
+        </div>
+        <!--提示框-->
+        <div id="logAlert2" class="alert alert-success hide" >
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>用户名或密码错误。</strong>
+        </div>
+        <div id="d_loguser" class="form-group">
+            <label class="sr-only" for="log_user">Login Username</label>
+            <input type="text" class="form-control" oninput="checkUserForLog()" id="log_user" name="username" placeholder="用户名">
+        </div>
+        <div id="d_logpass" class="form-group">
+            <label class="sr-only" for="log_pass">Login Password</label>
+            <input type="password" class="form-control" oninput="checkPassForLog()" id="log_pass" name="password" placeholder="密码">
+        </div>
+        <div class="floatdiv1">
+            <div class="changeform"><a href="/register">现在注册</a></div>
+        </div>
+        <button type="submit" id="logBtn" class="btn btn-primary">登录</button>
+    </div>
+</form>
+</div>
+
+<div th:if="${lor} eq 'reg'">
+<form id="regform" method="post" onsubmit="return false">
+    <div id="register_main">
+        <div class="form_title">注册</div>
+        <!--提示框-->
+        <div id="regAlert1" class="alert alert-success hide" >
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>注册成功。</strong>
+        </div>
+        <div id="d_reguser" class="form-group has-feedback">
+            <label class="sr-only" for="reg_user">Register Username</label>
+            <input type="text" class="form-control" oninput="checkUserForReg()" id="reg_user" name="username" placeholder="用户名">
+            <span id="inputState_ru" class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true"></span>
+            <!--
+            <span id="enableForReg" class="input-group-addon hide">用户名可以注册</span>
+            -->
+            <span id="regAlert2" class="input-group-addon hide">用户名已被注册</span>
+            <span id="helpBlock1" class="help-block">用户名为5~16位的字母或数字</span>
+        </div>
+        <div id="d_regpass" class="form-group has-feedback">
+            <label class="sr-only" for="reg_pass">Register Password</label>
+            <input type="password" class="form-control" oninput="checkPassForReg()" id="reg_pass" name="password" placeholder="密码">
+            <span id="inputState_rp" class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true"></span>
+            <span id="helpBlock2" class="help-block">密码至少6位的字母或数字</span>
+        </div>
+        <div id="d_regpass2" class="form-group has-feedback">
+            <label class="sr-only" for="reg_pass2">Register Password Check</label>
+            <input type="password" class="form-control" oninput="checkPass2ForReg()" id="reg_pass2" name="passcheck" placeholder="确认密码">
+            <span id="inputState_rp2" class="glyphicon glyphicon-ok form-control-feedback hide" aria-hidden="true"></span>
+        </div>
+        <!--提示框-->
+        <div id="regAlert3" class="alert alert-warning hide">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>两次输入密码不一致。</strong>
+        </div>
+        <div class="floatdiv1">
+            <div class="changeform"><a href="/login">现在登录</a></div>
+        </div>
+        <button type="submit" id="regBtn" class="btn btn-primary">注册</button>
+    </div>
+</form>
+</div>
+    <div th:include="progressbar::progressbar"></div>
+<script type="text/javascript" th:src="@{../js/user.js}" ></script>
+
+</body>
+</html>

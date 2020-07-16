@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="progressbar">
+    <button id="show"
+            onclick="showprog()" hidden>显示</button>
+    <!--进度条相关-->
+    <div class="modal fade" id="loadmodal">
+        <div id="loadtext" class="modal-dialog">
+            <div class="progress progress-striped active">
+                <div id="prog" class="progress-bar progress-bar-success" role="progressbar"
+                     aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
+                     style="width: 0%;">
+                </div>
+            </div>
+            <button id="closeprogBtn"
+                    onclick="closeprog()">关闭</button>
+        </div>
+    </div>
+    <script>
+        function showprog(){
+            $('#loadmodal').modal({backdrop:'static',keyboard:false});
+            $('#prog').css("width","1%");
+            setTimeout("$('#prog').css('width', '75%')",600);
+        }
+        function closeprog(){
+            $('#loadmodal').modal('hide');
+        }
+        function endprog(){
+            $('#prog').css("width","100%");
+            setTimeout("$('#loadmodal').modal('hide')",400);
+        }
+    </script>
+</div>
+</body>
+</html>

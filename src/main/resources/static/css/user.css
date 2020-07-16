@@ -1,0 +1,39 @@
+body{
+    /*background-color: rgba(197, 237, 240, 0.76);*/
+    background-image: url("/images/bg4.jpg");
+    background-repeat: no-repeat;
+}
+#mainbox{
+    margin: 0 auto;
+    width:980px;
+    padding: 60px 100px;
+    background-color: rgba(245, 245, 245, 0.76);
+}
+#logform,#regform{
+    width: 380px;
+    height: 100%;
+    background-color: #e4e4e4;
+    margin: 0 auto;
+    padding: 20px;
+}
+.form_title{
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+#loadtext{
+    background-color: rgba(42, 42, 42, 0.76);
+    padding: 5px;
+}
+.changeform{
+    float: right;
+}
+.floatdiv1:after{
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0;
+}
+.floatdiv1{
+    zoom:1;
+}

@@ -1,0 +1,96 @@
+body{
+    /*background-color: rgba(197, 237, 240, 0.76);*/
+    background-image: url("../img/test01.jpg");
+    background-repeat: no-repeat;
+}
+#indexbox{
+    margin: 0 auto;
+    width: 980px;
+    padding: 10px 40px;
+    background-color: rgba(245, 245, 245, 0.76);
+}
+.fixedBtn{
+    position: fixed;
+    right: 8%;
+    top: 70%;
+    height: 80px;
+    width: 80px;
+}
+#indexcontext{
+    padding: 10px;
+}
+
+
+.artsBlock{
+    padding: 20px;
+    margin: 15px auto;
+    background-color: rgba(251, 251, 251, 0.76);
+}
+
+.aBarticleInfo{
+    zoom: 1;
+    margin-top: -10px;
+}
+.aBarticleInfo:after{
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0;
+}
+.aBcomments{
+    float: left;
+    width: 50px;
+    margin: 3px 15px 0px 15px;
+    font-size: 20px;
+}
+.aBtitle{
+    float: left;
+    margin: 0 auto;
+    font-size: 20px;
+
+}
+.aBtag{
+    float: left;
+    margin: 0px 100px 0px 20px;
+}
+
+.aBauthorInfo{
+    zoom: 1;
+    float: right;
+    margin-right: 80px;
+}
+.aBauthorInfo:after{
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0;
+}
+.aBportrait{
+    float: left;
+}
+.aBportrait img{
+    width: 50px;
+}
+.aBnickname{
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px;
+}
+.aBlevel{
+    float: left;
+    margin: 10px 10px 10px 0px;
+    color: rgba(25, 95, 14, 0.76);
+}
+
+.aBcontext{
+    font-size: 18px;
+    margin: 5px;
+    padding: 2px;
+}
+
+.singleImg img{
+    width: 270px;
+}

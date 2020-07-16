@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="navigation">
+    <div id="navigation">
+    <div id="navigation-main">
+        <div id="navigation-brand">
+            <blockquote class="blockquote-reverse">
+                <p><h3><b id="clickToIndex">闪石</b></h3></p>
+                <footer>期待发光的你 in <cite title="Source Title">ShiningStone</cite></footer>
+            </blockquote>
+        </div>
+        <div id="navigation-crumbs">
+            <b th:if="${session.userid} eq null">
+                <a href="/login">登录</a>
+                <!--&nbsp; | &nbsp;-->
+                <a href="/register" >注册</a>
+            </b>
+            <b th:if="${session.userid} ne null">
+                <div id="navigation-self">
+                    <div class='navigation-portrait'>
+                    <img th:src="${session.portrait}" class='img-circle'>
+                    </div>
+                    <div th:text="${session.nickname}" class='navigation-nickname'></div>
+                    <div class='navigation-level'>
+                        LV.<b th:text="${session.level}"></b>
+                    </div>
+                </div>
+            </b>
+        </div>
+    </div>
+        <script>
+            $(document).ready(function(){
+                $("#clickToIndex").click(function(){
+                    window.location = "/";
+                });
+            });
+        </script>
+        <link rel="stylesheet" th:href="@{../css/top.css}">
+    </div>
+</div>
+</body>
+</html>

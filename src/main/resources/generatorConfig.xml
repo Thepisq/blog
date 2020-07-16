@@ -1,0 +1,18 @@
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <classPathEntry location="C:\Users\13496\.m2\repository\mysql\mysql-connector-java\5.1.35" />
+    <context id="dsql" targetRuntime="MyBatis3DynamicSql">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/blog"
+                        userId="root"
+                        password="root"/>
+        <javaModelGenerator targetPackage="com.zbnetwork.blog.app.DO" targetProject="src/main/java"/>
+
+        <javaClientGenerator targetPackage="com.zbnetwork.blog.app.mapper" targetProject="src/main/java"/>
+
+        <table tableName="blog" />
+        <table tableName="user" />
+    </context>
+</generatorConfiguration>

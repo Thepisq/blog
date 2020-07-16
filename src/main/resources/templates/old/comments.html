@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="comments">
+    <div class="modal fade" id="editormodal">
+        <div class="modal-dialog" id="editormodaldialog">
+            <div class="modal-content" id="editormodalcontent">
+                <div class="modal-header">
+                    <h3><strong>回复</strong></h3>
+                </div>
+                <div class="modal-body">
+                    <form id="form" method="post">
+                        <div id="commentsEditor">
+                            <!--编辑器-->
+                        </div>
+                        <div class="modal-footer">
+                            <button id="replyBtn" type="button" class="btn btn-primary">回复</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" th:src="@{../js/wangEditor.min.js}"></script>
+        <script type="text/javascript" th:src="@{../js/comments.js}"></script>
+        <link rel="stylesheet" th:href="@{../css/editor.css}">
+    </div>
+</div>
+</body>
+</html>

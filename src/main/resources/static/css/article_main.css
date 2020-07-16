@@ -1,0 +1,143 @@
+body{
+    /*background-color: rgba(197, 237, 240, 0.76);*/
+    background-image: url("../img/test01.jpg");
+    background-repeat: no-repeat;
+}
+#indexbox{
+    margin: 0 auto;
+    width: 980px;
+    padding: 10px 40px;
+    background-color: rgba(245, 245, 245, 0.85);
+}
+
+#indexintroduce{
+    width: 100%;
+    margin:0 auto;
+    padding-bottom: 8px;
+}
+#indexintroduce .line{
+    border-bottom: #000 solid;
+    margin-top: 5px;
+}
+
+.clearfloat{
+    zoom: 1;
+}
+.clearfloat:after{
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0;
+}
+
+.editorBtn{
+    position: fixed;
+    right: 8%;
+    top: 70%;
+    height: 80px;
+    width: 80px;
+}
+
+#indexcontext{
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+#authorInfo{
+    zoom: 1;
+}
+#authorInfo:after{
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0;
+}
+.authorInfo{
+    float: right;
+    margin: 20px 40px 10px 0px;
+}
+.author_title{
+    width: 2em;
+    border-bottom: solid 2px chartreuse;
+}
+.portrait{
+    float: left;
+}
+.portrait img{
+    width: 50px;
+}
+.nickname{
+    float: left;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px;
+}
+.level{
+    float: left;
+    margin: 10px 10px 10px 0px;
+    color: rgba(25, 95, 14, 0.76);
+}
+
+#about{
+    float: right;
+}
+
+#bottom{
+    margin: 0 auto;
+    border-top: solid 2px darkred;
+}
+#bottom-content{
+    background-color: rgba(237, 237, 237, 0.80);
+    padding: 10px 15px 10px 15px;
+}
+#bottom_title{
+    width: 3em;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: "microsoft yahei";
+    border-bottom: solid 5px royalblue;
+}
+#showcomments{
+    margin: 10px 2px;
+}
+.commentsInfo{
+    zoom: 1;
+    padding: 5px;
+    margin: 2px auto;
+}
+.commentsInfo:after{
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0;
+}
+.commentsInfo .userinfo{
+    float: left;
+}
+.commentsInfo .portrait{
+    margin: 0 auto;
+}
+.commentsInfo .portrait img{
+    width: 50px;
+}
+.commentsInfo .nickname{
+    font-size: 18px;
+    margin: 10px;
+}
+.commentsInfo .level{
+    margin: 10px 10px 10px 0px;
+    color: rgba(25, 95, 14, 0.76);
+}
+
+.commentsInfo .comments{
+    margin-left: 90px;
+    font-size: 18px;
+}
+
+.thereIsBottom{
+    text-align: center;
+    margin: 15px;
+}

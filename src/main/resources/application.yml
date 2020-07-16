@@ -1,0 +1,28 @@
+pageSize: 20
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/blog?useSSL=false
+      username: root
+      password: root
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    suffix: .html
+    encoding: UTF-8
+    mode: LEGACYHTML5
+  security:
+    user:
+      name: security_user1
+      password: SeCuRiTy1234
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+  offsetAsPageNum: true
+  # maybe delete in final version
+  page-size-zero: 0
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
