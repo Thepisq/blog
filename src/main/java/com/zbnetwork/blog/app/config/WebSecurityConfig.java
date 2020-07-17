@@ -45,14 +45,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**", "/users/**").hasRole("ADMIN")
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/")
+                //表单input的name属性要与设置的一致
                 .usernameParameter("username").passwordParameter("password")
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/login");
-        http.csrf().disable();
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/CSS/**", "bootstrap-3.3.7-dist/**", "/js/**");
+        web.ignoring().antMatchers("/static/**");
     }
 }

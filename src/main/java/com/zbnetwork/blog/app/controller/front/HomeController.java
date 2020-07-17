@@ -31,17 +31,17 @@ public class HomeController {
 
     @GetMapping("/login")
     public String login(){
-        return "login";
+        return "login_page";
     }
 
     @GetMapping("/regsister")
     public String register(){
-        return null;
+        return "register_page";
     }
 
     @GetMapping("/editor")
     public String editor(){
-        return null;
+        return "user/editor";
     }
 
     @GetMapping("/error")

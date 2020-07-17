@@ -33,8 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int saveUser(UserDTO userDTO) {
-        User user = UserTrans.INSTANCE.dto2Do(userDTO);
+    public int saveUser(User user) {
         return userMapper.insertSelective(user);
     }
 
@@ -50,5 +49,10 @@ public class UserServiceImpl implements UserService {
         List<User> userList = new ArrayList<User>(userMapper.select(c -> c));
         userList.forEach(user -> System.out.println("{Service} " + user.toString()));
         return UserTrans.INSTANCE.listDo2Dto(userList);
+    }
+
+    @Override
+    public int findUserExists(String username) {
+        return userMapper.findUserExists(username) == null ? 0 : 1;
     }
 }

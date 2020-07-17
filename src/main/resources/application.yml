@@ -11,10 +11,12 @@ spring:
     suffix: .html
     encoding: UTF-8
     mode: LEGACYHTML5
+    cache: false
   security:
     user:
       name: security_user1
       password: SeCuRiTy1234
+
 pagehelper:
   helper-dialect: mysql
   reasonable: true
