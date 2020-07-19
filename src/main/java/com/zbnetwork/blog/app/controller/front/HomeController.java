@@ -1,5 +1,7 @@
 package com.zbnetwork.blog.app.controller.front;
 
+import com.zbnetwork.blog.app.utils.role.UserUd;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,18 +32,23 @@ public class HomeController {
     }
 
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "login_page";
     }
 
-    @GetMapping("/regsister")
-    public String register(){
+    @GetMapping("/t")
+    public String test() {
+        return "test";
+    }
+
+    @GetMapping("/register")
+    public String register() {
         return "register_page";
     }
 
     @GetMapping("/editor")
-    public String editor(){
-        return "user/editor";
+    public String editor() {
+        return "blog/editor";
     }
 
     @GetMapping("/error")
@@ -58,14 +65,22 @@ public class HomeController {
         model.addAttribute("authorities", authorityCollection.toString());
         return "user/user";
     }
+
     @RequestMapping("/admin")
-    public String admin(@AuthenticationPrincipal Principal principal, Model model){
+    public String admin(@AuthenticationPrincipal Principal principal, Model model) {
         //获取当前用户信息并带回页面
         model.addAttribute("username", principal.getName());
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Collection<GrantedAuthority> authorityCollection = (Collection<GrantedAuthority>) auth.getAuthorities();
         model.addAttribute("authorities", authorityCollection.toString());
         return "admin/admin";
+    }
+
+    @GetMapping("/myinfo")
+    public ResponseEntity<?> myinfo() {
+        //获取当前用户信息
+        UserUd ud = (UserUd) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(ud.toString());
     }
 
 }

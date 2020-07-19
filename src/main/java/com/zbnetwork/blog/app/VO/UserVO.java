@@ -14,9 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class UserVO implements Serializable {
     static final long serialVersionUID = 1L;
-    //user --> id
     private Integer userId;
-    //user --> username
     private String nickname;
     private String phone;
     private String email;

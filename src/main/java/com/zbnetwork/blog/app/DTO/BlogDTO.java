@@ -15,10 +15,13 @@ import java.util.Date;
 public class BlogDTO {
     private Integer id;
     private Integer authorId;
-    private Date pushDate;
+    private String title;
     private Integer likes;
     private Integer clicks;
     private Integer collects;
     private Integer comments;
+    private Date firstPushDate;
+    private Date lastPushDate;
+    private Integer topicId;
     private String content;
 }

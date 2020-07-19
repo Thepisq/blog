@@ -12,7 +12,9 @@
 
         <javaClientGenerator targetPackage="com.zbnetwork.blog.app.mapper" targetProject="src/main/java"/>
 
-        <table tableName="blog" />
-        <table tableName="user" />
+        <table tableName="blog"/>
+        <table tableName="sys_role"/>
+        <table tableName="sys_topic"/>
+        <table tableName="user"/>
     </context>
 </generatorConfiguration>

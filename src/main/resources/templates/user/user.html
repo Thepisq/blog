@@ -5,11 +5,11 @@
     <title>User</title>
 </head>
 <body>
+<div id="navigation" th:include="navigate::nav"></div>
 <h1>用户页面，需要USER权限</h1>
-
 <form th:action="@{/logout}" method="post">
     <button class="btn btn-danger" style="margin-top: 20px">退出登录</button>
 </form>
-<div id="navigation" th:include="navigate::info"></div>
+<div id="userInfo" th:include="navigate::info"></div>
 </body>
 </html>

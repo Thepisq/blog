@@ -1,6 +1,6 @@
 package com.zbnetwork.blog.app.service.impl;
 
-import com.zbnetwork.blog.app.DO.User;
+import com.zbnetwork.blog.app.mapper.UserDynamicSqlSupport;
 import com.zbnetwork.blog.app.mapper.UserMapper;
 import com.zbnetwork.blog.app.utils.mapstruct.UserTrans;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
  * @author 13496
@@ -27,11 +29,8 @@ public class UserUdServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userMapper.selectByUsername(username);
-        if (user != null) {
-            return UserTrans.INSTANCE.do2Ud(user);
-        } else {
-            throw new UsernameNotFoundException("用户[username: " + username + "]不存在");
-        }
+        return userMapper.selectOne(c -> c.where(UserDynamicSqlSupport.username, isEqualTo(username)))
+                .map(UserTrans.INSTANCE::do2Ud)
+                .orElseThrow(() -> new UsernameNotFoundException("用户[username: " + username + "]不存在"));
     }
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>写Blog</title>
+    <script type="text/javascript" th:src="@{js/jquery-3.5.1.min.js}"></script>
+    <script th:src="@{bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js}"></script>
+    <script type="text/javascript" th:src="@{quill-1.3.6/js/quill.js}"></script>
+    <link rel="stylesheet" th:href="@{quill-1.3.6/css/quill_snow.css}">
+    <link rel="stylesheet" th:href="@{bootstrap-4.4.1-dist/css/bootstrap.min.css}">
+    <style>
+        .editor-form {
+            padding: 10px 5px 10px 5px;
+            max-width: 800px;
+        }
+
+        .quill-container {
+            font-size: 13px;
+            height: 100%;
+            margin: 0px;
+            position: relative;
+        }
+
+        .quill-editor {
+            min-height: 300px;
+            font-size: 16px;
+            word-wrap: break-word;
+            word-break: break-word;
+            line-height: 1.5;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div th:include="navigate::navbar"></div>
+    <div id="editor_content" class="container col-10">
+        <form id="editor_form" class="editor-form" method="post">
+            <div class="form-group row">
+                <label for="blog_title" class="col-sm-2 col-form-label">标题</label>
+                <div class="col-sm-10">
+                    <input id="blog_title" class="form-control" type="text" name="title" placeholder="标题">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="blog_tag" class="col-sm-2 col-form-label">tag</label>
+                <div class="col-sm-10">
+                    <input id="blog_tag" class="form-control" type="text" name="topicId" placeholder="tag">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">内容</label>
+                <div class="quill-container col-sm-10">
+                    <div id="editor" class="quill-editor">
+                        <!--编辑区域-->
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <button id="submit_blog_btn" type="button" class="btn btn-lg btn-primary btn-block">发布文章</button>
+            </div>
+        </form>
+        <script type="text/javascript" th:src="@{../js/editor.js}"></script>
+    </div>
+    <div th:include="navigate::info"></div>
+</div>
+<div th:include="navigate::advertisement"></div>
+</body>
+</html>

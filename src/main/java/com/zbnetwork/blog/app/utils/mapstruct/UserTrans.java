@@ -16,6 +16,7 @@ import java.util.List;
  * do : from Database
  * dto : from Controller to Service OR reverse
  * vo : from Controller to Browser
+ * 加了@Mapper(即 @org.mapstruct.Mapper)的接口会在编译后自动生成impl类
  */
 @Mapper(componentModel = "spring")
 public interface UserTrans {
@@ -24,8 +25,6 @@ public interface UserTrans {
     /**
      * 两个类变量名一致不用额外写映射
      */
-    UserDTO vo2Dto(UserVO userVO);
-
     User dto2Do(UserDTO userDTO);
 
     UserDTO do2Dto(User user);

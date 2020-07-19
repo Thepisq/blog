@@ -17,6 +17,7 @@ import org.mybatis.dynamic.sql.update.UpdateModel;
 import org.mybatis.dynamic.sql.update.render.UpdateStatementProvider;
 import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 import org.mybatis.dynamic.sql.util.mybatis3.MyBatis3Utils;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Generated;
 import java.util.Collection;
@@ -27,13 +28,8 @@ import static com.zbnetwork.blog.app.mapper.UserDynamicSqlSupport.*;
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 @Mapper
+@Component
 public interface UserMapper {
-
-    @Select("select * from user where username = #{username}")
-    User selectByUsername(@Param("username") String username);
-
-    @Select("select 1 from user where username = #{username}")
-    Integer findUserExists(@Param("username") String username);
 
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-17T17:42:14.0200815+08:00", comments = "Source Table: user")
     BasicColumn[] selectList = BasicColumn.columnList(id, username, password, phone, email, introduction, roles);

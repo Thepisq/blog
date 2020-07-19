@@ -32,5 +32,5 @@ public interface UserService {
     /**
      * find user exists
      */
-    int findUserExists(String username);
+    long findUserExists(String username);
 }

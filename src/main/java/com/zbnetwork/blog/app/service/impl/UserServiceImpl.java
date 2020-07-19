@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.zbnetwork.blog.app.DO.User;
 import com.zbnetwork.blog.app.DTO.UserDTO;
 import com.zbnetwork.blog.app.exception.UserNotFoundException;
+import com.zbnetwork.blog.app.mapper.UserDynamicSqlSupport;
 import com.zbnetwork.blog.app.mapper.UserMapper;
 import com.zbnetwork.blog.app.service.UserService;
 import com.zbnetwork.blog.app.utils.mapstruct.UserTrans;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
  * @author 13496
@@ -39,20 +42,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int updateUser(UserDTO userDTO) {
-        User user = UserTrans.INSTANCE.dto2Do(userDTO);
-        return userMapper.updateByPrimaryKeySelective(user);
+        return userMapper.updateByPrimaryKeySelective(UserTrans.INSTANCE.dto2Do(userDTO));
     }
 
     @Override
     public List<UserDTO> findAll(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> userList = new ArrayList<User>(userMapper.select(c -> c));
-        userList.forEach(user -> System.out.println("{Service} " + user.toString()));
+        System.out.println("[UserService.findAll]-->: 一共查出了{" + userList.size() + "}条数据, pageSize: " + pageSize);
         return UserTrans.INSTANCE.listDo2Dto(userList);
     }
 
     @Override
-    public int findUserExists(String username) {
-        return userMapper.findUserExists(username) == null ? 0 : 1;
+    public long findUserExists(String username) {
+        return userMapper.count(c -> c.where(UserDynamicSqlSupport.username, isEqualTo(username)));
     }
 }

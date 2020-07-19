@@ -34,7 +34,7 @@ public class UserUd implements UserDetails {
         String[] authorities = roles.split(",");
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
         for (String role : authorities) {
-            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(role));
+            simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         }
         return simpleGrantedAuthorities;
     }

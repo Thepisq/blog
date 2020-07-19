@@ -40,9 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/index", "/error").permitAll()
+                .antMatchers("/").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/admin/**", "/users/**").hasRole("ADMIN")
+                .antMatchers("/blog/**", "/editor").hasRole("BLOG")
+                .antMatchers("/admin/**", "/users/**", "/blogs/**").hasRole("ADMIN")
                 .and()
                 .formLogin().loginPage("/login").defaultSuccessUrl("/")
                 //表单input的name属性要与设置的一致

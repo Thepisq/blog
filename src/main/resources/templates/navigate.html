@@ -1,21 +1,91 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
 </head>
 <body>
-<div th:fragment="info">
-    <br/><br/>
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-md navbar-light bg-info">
+        <a class="navbar-brand" href="/">Blog</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon">
+                <!--此处为折叠后显示的按钮-->
+            </span>
+        </button>
+        <div id="navbarSupportedContent" class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="#" data-toggle="dropdown">
+                        快捷操作
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/user">用户页面</a>
+                        <a class="dropdown-item" href="/admin">管理员页面</a>
+                        <a class="dropdown-item" href="/login">登录页面</a>
+                        <a class="dropdown-item" href="/register">注册界面</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/editor">写Blog</a>
+                    </div>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="搜索">
+                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">搜索</button>
+            </form>
+        </div>
+    </nav>
+</div>
+<div th:fragment="advertisement">
+    <div id="advertisementCarousel" class="carousel slide carousel-fade w-25 float-right" data-ride="carousel">
+        <div data-toggle="popover" title="友情链接" data-content="本应用适合18岁以上年龄用户使用，请18岁以下用户自觉离开">
+            广告 [<a class="text-decoration-none text-dark" href="javascript:void(0);" onclick="removeCarousel()">X</a>]
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595044872126&di=46cf9157214446ee15dfde64d72666ce&imgtype=0&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D3294535560%2C2836415746%26fm%3D214%26gp%3D0.jpg"
+                     class="d-block w-100" alt="新版本介绍">
+                <div class="jumbotron">
+                    <h1 class="display-4">渣渣辉</h1>
+                    <p class="lead">探挽懒月，介四里没有挽过的船新版本</p>
+                    <a class="text-decoration-none" target="_blank"
+                       href="https://www.bh3.com/news/7593?cate=171">船新版本</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4198912114,1279055649&fm=26&gp=0.jpg"
+                     class="d-block w-100" alt="启动器下载">
+                <div class="jumbotron">
+                    <h1 class="display-4">轱天乐</h1>
+                    <p class="lead">挤需体验三番钟，里造会干我一样，爱象戒宽油系</p>
+                    <a class="text-decoration-none" target="_blank"
+                       href="https://api-takumi.mihoyo.com/event/download_porter/link/bh3_cn/bh3/pc_official">立即体验</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595044958393&di=4bda5ecc43685075f626cca230738d1b&imgtype=0&src=http%3A%2F%2Fi0.hdslb.com%2Fbfs%2Farticle%2F7dea328bf87dea2073f93a95944cfe6040ac8233.jpg"
+                     class="d-block w-100" alt="点击查看'砍我一刀'">
+                <div class="jumbotron ">
+                    <h1 class="display-4">一刀999</h1>
+                    <p class="lead">是兄弟 就来砍我一刀吧!</p>
+                    <a class="text-decoration-none" target="_blank" href="https://www.bilibili.com/video/BV1UT4y1J7xN">砍我一刀！</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function removeCarousel() {
+            $('#advertisementCarousel').remove()
+        }
+
+        //加了才有效
+        $('[data-toggle="popover"]').popover()
+    </script>
+</div>
+<div th:fragment="info" class="clearfix">
     <p>你的当前用户名是：</p>
     <p th:text="${username}" style="margin-top: 25px; color: crimson">username</p>
     <p>你的权限是：</p>
     <p th:text="${authorities}" style="margin-top: 25px; color: crimson">authorities</p>
-    <a href="/index">主页</a>
-    <a href="/user">用户页面</a>
-    <a href="/admin">管理员页面</a>
-    <a href="/login">登录页面</a>
-    <a href="/regsister">注册界面</a>
-    <br/><br/>
 </div>
 </body>
 </html>
