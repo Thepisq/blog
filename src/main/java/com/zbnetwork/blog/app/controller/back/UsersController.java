@@ -1,7 +1,7 @@
 package com.zbnetwork.blog.app.controller.back;
 
 import com.zbnetwork.blog.app.DTO.UserDTO;
-import com.zbnetwork.blog.app.VO.UserVO;
+import com.zbnetwork.blog.app.VO.UserFrontVO;
 import com.zbnetwork.blog.app.service.UserService;
 import com.zbnetwork.blog.app.utils.mapstruct.UserTrans;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,29 +33,29 @@ public class UsersController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<?> one(@PathVariable int id) {
+    public ResponseEntity<?> one(@PathVariable Long id) {
         return ResponseEntity.ok(userService.oneUser(id));
     }
 
     @GetMapping("/users/page={pageNum}")
     public ResponseEntity<?> all(@PathVariable int pageNum) {
-        List<UserVO> userVOList = UserTrans.INSTANCE.listDto2Vo(userService.findAll(pageNum, pageSize));
-        userVOList.forEach(userVO -> System.out.println("{Controller} " + userVO.toString()));
-        return ResponseEntity.ok(userVOList);
+        List<UserFrontVO> userFrontVOList = UserTrans.INSTANCE.listDto2FtVo(userService.findAll(pageNum, pageSize));
+        userFrontVOList.forEach(userFrontVO -> System.out.println("{Controller} " + userFrontVO.toString()));
+        return ResponseEntity.ok(userFrontVOList);
     }
 
     /**
      * for test
      */
     @RequestMapping("/users/{id}/pass={rawPass}")
-    public ResponseEntity<?> addPass(@PathVariable int id, @PathVariable String rawPass) {
+    public ResponseEntity<?> addPass(@PathVariable Long id, @PathVariable String rawPass) {
         UserDTO user = userService.oneUser(id);
         user.setPassword(new BCryptPasswordEncoder().encode(rawPass));
         return ResponseEntity.ok(userService.updateUser(user));
     }
 
     @RequestMapping("/users/{id}/passis={rawPass}")
-    public ResponseEntity<?> isPass(@PathVariable int id, @PathVariable String rawPass) {
+    public ResponseEntity<?> isPass(@PathVariable Long id, @PathVariable String rawPass) {
         UserDTO user = userService.oneUser(id);
         user.setPassword(new BCryptPasswordEncoder().encode(rawPass));
         return ResponseEntity.ok("isMatches: " + new BCryptPasswordEncoder().matches(rawPass, user.getPassword()));

@@ -30,9 +30,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO oneUser(int id) {
-        User user = userMapper.selectByPrimaryKey(id).orElseThrow(()->new UserNotFoundException(id));
+    public UserDTO oneUser(Long id) {
+        User user = userMapper.selectByPrimaryKey(id).orElseThrow(() -> new UserNotFoundException(id));
         return UserTrans.INSTANCE.do2Dto(user);
+    }
+
+    @Override
+    public UserDTO oneUser(String username) {
+        User user = userMapper.selectOne(c -> c.where(UserDynamicSqlSupport.username, isEqualTo(username)))
+                .orElseThrow(() -> new UserNotFoundException(username));
+        return null;
     }
 
     @Override
@@ -48,7 +55,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> findAll(int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<User> userList = new ArrayList<User>(userMapper.select(c -> c));
+        List<User> userList = new ArrayList<>(userMapper.select(c -> c));
         System.out.println("[UserService.findAll]-->: 一共查出了{" + userList.size() + "}条数据, pageSize: " + pageSize);
         return UserTrans.INSTANCE.listDo2Dto(userList);
     }
@@ -56,5 +63,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public long findUserExists(String username) {
         return userMapper.count(c -> c.where(UserDynamicSqlSupport.username, isEqualTo(username)));
+    }
+
+    @Override
+    public long findUserExists(Long id) {
+        return userMapper.count(c -> c.where(UserDynamicSqlSupport.id, isEqualTo(id)));
     }
 }

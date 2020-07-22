@@ -1,7 +1,10 @@
 package com.zbnetwork.blog.app.controller.front;
 
 import com.zbnetwork.blog.app.DO.Blog;
+import com.zbnetwork.blog.app.DTO.BlogDTO;
 import com.zbnetwork.blog.app.service.BlogService;
+import com.zbnetwork.blog.app.utils.IdWorker;
+import com.zbnetwork.blog.app.utils.mapstruct.BlogTrans;
 import com.zbnetwork.blog.app.utils.role.UserUd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,20 +22,24 @@ import java.util.Date;
 @RestController
 public class BlogController {
     private final BlogService blogService;
+    private final IdWorker idWorker = new IdWorker();
 
     @Autowired
     public BlogController(BlogService blogService) {
         this.blogService = blogService;
     }
 
-    @GetMapping("/blog/{id}")
-    public ResponseEntity<?> getBlog(@PathVariable int id) {
-        return ResponseEntity.ok(blogService.oneBlog(id));
+    @GetMapping("/blog/get={id}")
+    public ResponseEntity<?> getBlog(@PathVariable Long id) {
+        BlogDTO blogDTO = blogService.oneBlog(id);
+        return ResponseEntity.ok(BlogTrans.INSTANCE.dto2FtVo(blogDTO));
     }
 
     @PostMapping("/blog/add")
     public ResponseEntity<?> addBlog(@RequestParam String title, @RequestParam String content, @RequestParam Integer topicId) {
         Blog blog = new Blog();
+
+        blog.setId(idWorker.nextId());
         blog.setTitle(title);
         blog.setContent(content);
         blog.setTopicId(topicId);

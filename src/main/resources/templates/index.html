@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,6 +16,7 @@
         <h1 class="display-4">Blog 主页</h1>
         <p class="lead">不需要任何权限即可访问</p>
     </div>
+    <div sec:authorize="hasRole('ROLE_BLOG')" th:include="navigate::write" class="float-right bg-dark"></div>
     <div th:include="navigate::info"></div>
 </div>
 <div th:include="navigate::advertisement"></div>

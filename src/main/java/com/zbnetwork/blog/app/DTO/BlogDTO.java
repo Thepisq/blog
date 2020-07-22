@@ -8,13 +8,16 @@ import java.util.Date;
 
 /**
  * @author 13496
+ * 包含部分用户字段的Blog对象
+ * 'authorName'为'authorId'在User表(的'id')所对应的'username'
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BlogDTO {
-    private Integer id;
-    private Integer authorId;
+    private Long id;
+    private Long authorId;
+    private String authorName;
     private String title;
     private Integer likes;
     private Integer clicks;

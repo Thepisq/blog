@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserUd implements UserDetails {
-    private Integer id;
+    private Long id;
     private String username;
     private String password;
     private String phone;

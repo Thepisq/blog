@@ -1,11 +1,13 @@
 package com.zbnetwork.blog.app.controller.front;
 
-import com.zbnetwork.blog.app.utils.role.UserUd;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,19 +17,15 @@ import java.security.Principal;
 import java.util.Collection;
 
 /**
- *
  * @author Administrator
  * @date 18-12-9
  */
+@Slf4j
 @Controller
 public class HomeController {
-    @GetMapping(value = {"/","/index"})
-    public String index(Model model){
-        //获取当前用户信息并带回页面
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Collection<GrantedAuthority> authorityCollection = (Collection<GrantedAuthority>) auth.getAuthorities();
-        model.addAttribute("authorities", authorityCollection.toString());
-        model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
+    @GetMapping(value = {"/", "/index"})
+    @PreAuthorize("hasAnyAuthority()")
+    public String index() {
         return "index";
     }
 
@@ -36,24 +34,15 @@ public class HomeController {
         return "login_page";
     }
 
-    @GetMapping("/t")
-    public String test() {
-        return "test";
-    }
-
     @GetMapping("/register")
     public String register() {
         return "register_page";
     }
 
     @GetMapping("/editor")
+    @PreAuthorize("hasRole('ROLE_BLOG')")
     public String editor() {
         return "blog/editor";
-    }
-
-    @GetMapping("/error")
-    public String error() {
-        return "error/403";
     }
 
     @RequestMapping("/user")
@@ -77,10 +66,13 @@ public class HomeController {
     }
 
     @GetMapping("/myinfo")
-    public ResponseEntity<?> myinfo() {
-        //获取当前用户信息
-        UserUd ud = (UserUd) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(ud.toString());
+    public ResponseEntity<?> myInfo(@AuthenticationPrincipal UserDetails user) {
+        return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/myinfo2")
+    public ResponseEntity<?> myInfo2() {
+        return ResponseEntity.ok(SecurityContextHolder.getContext().getAuthentication());
     }
 
 }

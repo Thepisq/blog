@@ -12,7 +12,7 @@ public interface BlogService {
      */
     BlogDTO oneBlog(String title);
 
-    BlogDTO oneBlog(int id);
+    BlogDTO oneBlog(Long id);
 
     /**
      * save one blog

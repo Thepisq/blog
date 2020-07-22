@@ -1,69 +1,50 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>title</title>
-    <script th:src="@{../js/jquery-3.2.1.min.js}"></script>
-    <script th:src="@{../bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js}"></script>
-    <link rel="stylesheet" th:href="@{../bootstrap-4.4.1-dist/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{../css/signin.css}">
+    <script th:src="@{js/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{bootstrap-4.4.1-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{css/signin.css}">
+    <style>
+
+    </style>
 </head>
 
 <body>
-<div id="top" th:include="top::navigation"></div>
-<div id="indexbox">
-    <div id="aid" th:text="${article.id}" hidden></div>
-    <div id="indexintroduce">
-        <p><h1 th:text="${article.title}"></h1></p>
-        <div class="line"></div>
-        <div class='clearfloat'>
-            <div class="authorInfo">
-                <p class='author_title'>作者<p>
-                <div class='portrait'>
-                    <img th:src="${article.portrait}" class='img-circle'>
-                </div>
-                <div class='nickname' th:text="${article.nickname}"></div>
-                <div class='level'>LV.<b th:text="${article.level}"></b></div>
+<div class="container">
+    <div th:include="navigate::navbar"></div>
+    <div class="blog-container">
+        <div class="blog-top">
+            <div class="blog-title">
+                <!-- blog标题 -->
+            </div>
+            <div class="blog-author">
+                <!-- 作者信息 -->
+            </div>
+            <div class="blog-time">
+                <!-- 上传时间/最后编辑 -->
+            </div>
+        </div>
+        <div class="blog-content">
+            <!-- blog内容 -->
+        </div>
+        <div class="blog-bottom">
+            <div class="blog-topic">
+                <!-- 主题/标签 -->
+            </div>
+            <div class="blog-likes">
+                <!-- 赞数/点赞 -->
             </div>
         </div>
     </div>
-    <div id="indexcontext">
-        <div id="arts" th:utext="${article.context}">
-
-        </div>
-        <div class="clearfloat">
-            <div id="about">
-                浏览:<span th:text="${article.clicks}"></span>
-            </div>
-        </div>
-    </div>
-    <div id="bottom">
-        <div id="bottom-content">
-            <p id="bottom_title">评论区</p>
-            <div id="showcomments">
-                <div class="progress progress-striped active">
-                    <div class="progress-bar progress-bar-warning" role="progressbar"
-                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"
-                         style="width: 100%;">
-                    </div>
-                </div>
-            </div>
-            <div class="thereIsBottom">
-                到底了
-            </div>
-        </div>
-    </div>
-    <div th:include="comments::comments"></div>
-    <div th:include="progressbar::progressbar"></div>
-</div>
-<div th:if="${session.userid} ne null">
-    <button class="editorBtn btn btn-info glyphicon glyphicon-pencil" data-toggle="modal" data-target="#editormodal" type="button"></button>
-</div>
-<div th:if="${session.userid} eq null">
-    <button id="toLogin" class="editorBtn btn btn-info"  type="button">登录</button>
+    <div th:include="navigate::advertisement"></div>
+    <div th:include="navigate::info"></div>
 </div>
 </body>
 </html>

@@ -12,7 +12,9 @@ public interface UserService {
     /**
      * find one User
      */
-    UserDTO oneUser(int id);
+    UserDTO oneUser(Long id);
+
+    UserDTO oneUser(String username);
 
     /**
      * save one user
@@ -33,4 +35,6 @@ public interface UserService {
      * find user exists
      */
     long findUserExists(String username);
+
+    long findUserExists(Long id);
 }

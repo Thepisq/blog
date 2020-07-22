@@ -2,7 +2,7 @@ package com.zbnetwork.blog.app.utils.mapstruct;
 
 import com.zbnetwork.blog.app.DO.User;
 import com.zbnetwork.blog.app.DTO.UserDTO;
-import com.zbnetwork.blog.app.VO.UserVO;
+import com.zbnetwork.blog.app.VO.UserFrontVO;
 import com.zbnetwork.blog.app.utils.role.UserUd;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -35,9 +35,9 @@ public interface UserTrans {
             @Mapping(source = "id", target = "userId"),
             @Mapping(source = "username", target = "nickname")
     })
-    UserVO dto2Vo(UserDTO userDTO);
+    UserFrontVO dto2FtVo(UserDTO userDTO);
 
-    List<UserVO> listDto2Vo(List<UserDTO> userList);
+    List<UserFrontVO> listDto2FtVo(List<UserDTO> userList);
 
     UserUd do2Ud(User user);
 

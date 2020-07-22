@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,7 +21,6 @@
         .quill-container {
             font-size: 13px;
             height: 100%;
-            margin: 0px;
             position: relative;
         }
 
@@ -36,6 +36,7 @@
 </head>
 <body>
 <div class="container">
+
     <div th:include="navigate::navbar"></div>
     <div id="editor_content" class="container col-10">
         <form id="editor_form" class="editor-form" method="post">

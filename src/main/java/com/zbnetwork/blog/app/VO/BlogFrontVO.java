@@ -9,14 +9,16 @@ import java.util.Date;
 
 /**
  * @author 13496
+ * 在前端网页展示的对象
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogVO implements Serializable {
+public class BlogFrontVO implements Serializable {
     static final long serialVersionUID = 1L;
-    private Integer id;
-    private Integer authorId;
+    private Long id;
+    private Long authorId;
+    private String authorName;
     private String title;
     private Integer likes;
     private Integer clicks;

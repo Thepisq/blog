@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -12,8 +13,8 @@
     <link rel="stylesheet" th:href="@{css/signin.css}">
 </head>
 <body>
-<div class="container w-50">
-    <div id="navigation" th:include="navigate::nav"></div>
+<div class="container">
+    <div th:include="navigate::navbar"></div>
     <form id="register_form" class="form-signin" method="post" style="max-width: 420px;align-content: center"
           onsubmit="return false" novalidate>
         <h2 class="form-signin-heading">注册</h2>

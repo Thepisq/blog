@@ -12,12 +12,13 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserVO implements Serializable {
+public class UserFrontVO implements Serializable {
     static final long serialVersionUID = 1L;
-    private Integer userId;
+    private Long userId;
     private String nickname;
     private String phone;
     private String email;
     private String introduction;
+    private int likeNum;
     private int blogNum;
 }

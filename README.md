@@ -1,11 +1,26 @@
 # blog
 
-7/17 注册功能与相应前端页面  
-7/16 目前可以通过数据库user表登录
+####不定期更新的update一览  
 
-________________________
+>7/22
+
++登录注册采用`ajax`提交而不是`form`  
++数据库格式id采用`Snowflake`算法生成  
++使用`Quill`作为富文本编辑器    
+
+
+>7/17  
+
++注册功能与相应前端页面  
+
+>7/16  
+
++可以通过数据库user表登录
+
+---
 **tips**  
-+ [项目中mybatis的用法](http://mybatis.org/generator/generatedobjects/dynamicSqlV2.html)  
++ [项目中mybatis的用法](http://mybatis.org/generator/generatedobjects/dynamicSqlV2.html)
++ [Spring Security教程（一）](https://juejin.im/post/5cb33ec05188251ad1351af5) 
 _________________________  
 #### ***Bug记录***
 

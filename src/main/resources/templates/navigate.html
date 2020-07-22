@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 </head>
 <body>
@@ -9,7 +10,7 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon">
-                <!--此处为折叠后显示的按钮-->
+                <!--此span为折叠后显示的按钮-->
             </span>
         </button>
         <div id="navbarSupportedContent" class="collapse navbar-collapse">
@@ -35,9 +36,29 @@
         </div>
     </nav>
 </div>
+<div th:fragment="write">
+    <a href="/editor">
+        <table class="table table-borderless">
+            <tr>
+                <td>
+                    <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                              d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+                        <path fill-rule="evenodd"
+                              d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+                    </svg>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-light">写博客</td>
+            </tr>
+        </table>
+    </a>
+</div>
 <div th:fragment="advertisement">
     <div id="advertisementCarousel" class="carousel slide carousel-fade w-25 float-right" data-ride="carousel">
-        <div data-toggle="popover" title="友情链接" data-content="本应用适合18岁以上年龄用户使用，请18岁以下用户自觉离开">
+        <div data-toggle="popover" title="友情链接" data-content="本应用适合18岁及以上年龄用户，请未满18岁的用户自觉离开">
             广告 [<a class="text-decoration-none text-dark" href="javascript:void(0);" onclick="removeCarousel()">X</a>]
         </div>
         <div class="carousel-inner">
@@ -53,12 +74,12 @@
             </div>
             <div class="carousel-item">
                 <img src="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=4198912114,1279055649&fm=26&gp=0.jpg"
-                     class="d-block w-100" alt="启动器下载">
+                     class="d-block w-100" alt="xxx">
                 <div class="jumbotron">
                     <h1 class="display-4">轱天乐</h1>
                     <p class="lead">挤需体验三番钟，里造会干我一样，爱象戒宽油系</p>
                     <a class="text-decoration-none" target="_blank"
-                       href="https://api-takumi.mihoyo.com/event/download_porter/link/bh3_cn/bh3/pc_official">立即体验</a>
+                       href="https://getbootstrap.com/docs/4.5/getting-started/introduction/">立即体验</a>
                 </div>
             </div>
             <div class="carousel-item">
@@ -83,9 +104,9 @@
 </div>
 <div th:fragment="info" class="clearfix">
     <p>你的当前用户名是：</p>
-    <p th:text="${username}" style="margin-top: 25px; color: crimson">username</p>
+    <p sec:authentication="name"></p>
     <p>你的权限是：</p>
-    <p th:text="${authorities}" style="margin-top: 25px; color: crimson">authorities</p>
+    <p sec:authentication="authorities"></p>
 </div>
 </body>
 </html>
