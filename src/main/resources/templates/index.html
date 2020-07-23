@@ -10,14 +10,21 @@
     <link rel="stylesheet" th:href="@{bootstrap-4.4.1-dist/css/bootstrap.min.css}">
 </head>
 <body>
-<div class="container">
+<div class="">
     <div th:include="navigate::navbar"></div>
-    <div class="jumbotron jumbotron-fluid">
-        <h1 class="display-4">Blog 主页</h1>
-        <p class="lead">不需要任何权限即可访问</p>
+
+    <div class="container">
+        <div class="jumbotron jumbotron-fluid">
+            <h1 class="display-4">Blog 主页</h1>
+            <p class="lead">不需要任何权限即可访问</p>
+        </div>
+        <div class="blog-container">
+            <!--在这输出博客-->
+        </div>
+        <div sec:authorize="hasRole('ROLE_BLOG')" th:include="navigate::write" class="float-right bg-dark"></div>
+        <div th:include="navigate::info"></div>
     </div>
-    <div sec:authorize="hasRole('ROLE_BLOG')" th:include="navigate::write" class="float-right bg-dark"></div>
-    <div th:include="navigate::info"></div>
+
 </div>
 <div th:include="navigate::advertisement"></div>
 </body>

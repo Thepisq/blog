@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -24,13 +25,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserUdServiceImpl userUdService;
     private final MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
     private final MyAuthenticationFailureHandler myAuthenticationFailureHandler;
+    private final ValidateCodeFilter validateCodeFilter;
 
     @Autowired
-    public WebSecurityConfig(BackdoorAuthenticationProvider backdoorAuthenticationProvider, UserUdServiceImpl userUdService, MyAuthenticationSuccessHandler myAuthenticationSuccessHandler, MyAuthenticationFailureHandler myAuthenticationFailureHandler) {
+    public WebSecurityConfig(BackdoorAuthenticationProvider backdoorAuthenticationProvider, UserUdServiceImpl userUdService, MyAuthenticationSuccessHandler myAuthenticationSuccessHandler, MyAuthenticationFailureHandler myAuthenticationFailureHandler, ValidateCodeFilter validateCodeFilter) {
         this.backdoorAuthenticationProvider = backdoorAuthenticationProvider;
         this.userUdService = userUdService;
         this.myAuthenticationSuccessHandler = myAuthenticationSuccessHandler;
         this.myAuthenticationFailureHandler = myAuthenticationFailureHandler;
+        this.validateCodeFilter = validateCodeFilter;
     }
 
     /**
@@ -50,6 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                //设置validateCodeFilter在UsernamePasswordAuthenticationFilter之前调用
+                //使输入的验证码在用户名密码之前验证
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 //限定角色(role)及其资源(url)
                 .authorizeRequests(a -> a
                         .antMatchers("/").permitAll()

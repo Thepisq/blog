@@ -20,7 +20,8 @@ function login() {
         data: {
             "username": username.val(),
             "password": password.val(),
-            "remeber-me": $("#remember-me").val()
+            "remeber-me": $("#remember-me").val(),
+            "validateCode": $("#validateCode").val()
         },
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token)
@@ -30,7 +31,7 @@ function login() {
                 var status = data.status;
                 if (status == "fail") {
                     subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated");
-                    loginInfo.html("<p style=\"text-align: center\" class=\"text-danger\">登录失败，账号或密码错误!</p>");
+                    loginInfo.html("<p style=\"text-align: center\" class=\"text-danger\">账号或密码或验证码有误</p>");
                 } else if (status == "success") {
                     subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated bg-success");
                     loginInfo.html("<p style=\"text-align: center\" class=\"text-primary\">登录成功</p>");
