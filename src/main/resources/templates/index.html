@@ -19,6 +19,7 @@
             <p class="lead">不需要任何权限即可访问</p>
         </div>
         <div class="blog-container">
+            <div th:text="${blogs}"></div>
             <!--在这输出博客-->
         </div>
         <div sec:authorize="hasRole('ROLE_BLOG')" th:include="navigate::write" class="float-right bg-dark"></div>

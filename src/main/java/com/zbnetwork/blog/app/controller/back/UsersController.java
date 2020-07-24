@@ -5,7 +5,6 @@ import com.zbnetwork.blog.app.VO.UserFrontVO;
 import com.zbnetwork.blog.app.service.UserService;
 import com.zbnetwork.blog.app.utils.mapstruct.UserTrans;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+import static com.zbnetwork.blog.app.utils.Constants.pageSize;
 /**
  * @author 13496
  * "/users/**"
@@ -25,8 +24,6 @@ import java.util.List;
 public class UsersController {
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPE = new BCryptPasswordEncoder();
-    @Value("${pageSize:20}")
-    private static int pageSize;
     @Autowired
     public UsersController(UserService userService) {
         this.userService = userService;

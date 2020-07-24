@@ -13,7 +13,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
+import static com.zbnetwork.blog.app.utils.Constants.pageSize;
 /**
  * @author 13496
  * /blog/**
@@ -33,6 +35,12 @@ public class BlogController {
     public ResponseEntity<?> getBlog(@PathVariable Long id) {
         BlogDTO blogDTO = blogService.oneBlog(id);
         return ResponseEntity.ok(BlogTrans.INSTANCE.dto2FtVo(blogDTO));
+    }
+
+    @GetMapping("/blog/p={pageNum}")
+    public ResponseEntity<?> getBlogs(@PathVariable int pageNum) {
+        List<BlogDTO> blogs = blogService.findAll(pageNum, pageSize);
+        return ResponseEntity.ok(BlogTrans.INSTANCE.listDto2Vo(blogs));
     }
 
     @PostMapping("/blog/add")

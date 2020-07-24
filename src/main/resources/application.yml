@@ -1,4 +1,11 @@
-pageSize: 20
+blog:
+  jwt:
+    # 单位毫秒
+    expire-in: 86400000
+    secret-key: asuqwe124jvst29yr5gslnvui3
+    header: _xxxx
+  constants:
+    page-size: 20
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=UTC
@@ -12,6 +19,9 @@ spring:
     encoding: UTF-8
     mode: LEGACYHTML5
     cache: false
+  security:
+    user:
+      password: pass
 pagehelper:
   helper-dialect: mysql
   reasonable: true

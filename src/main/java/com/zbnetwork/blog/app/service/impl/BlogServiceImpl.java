@@ -1,5 +1,6 @@
 package com.zbnetwork.blog.app.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.zbnetwork.blog.app.DO.Blog;
 import com.zbnetwork.blog.app.DTO.BlogDTO;
 import com.zbnetwork.blog.app.DTO.UserDTO;
@@ -10,6 +11,9 @@ import com.zbnetwork.blog.app.service.UserService;
 import com.zbnetwork.blog.app.utils.mapstruct.BlogTrans;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
@@ -47,6 +51,14 @@ public class BlogServiceImpl implements BlogService {
             throw new RuntimeException("找不到Blog{id=[" + blog.getId() + "]}的作者{id=[" + blog.getAuthorId() + "]}");
         }
         return BlogTrans.do2DtoWithUser(blog, user);
+    }
+
+    @Override
+    public List<BlogDTO> findAll(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Blog> blogList = new ArrayList<>(blogMapper.select(c -> c));
+        System.out.println("[BlogService.findAll]-->: 一共查出了{" + blogList.size() + "}条数据, pageSize: " + pageSize);
+        return BlogTrans.INSTANCE.listDo2Dto(blogList);
     }
 
     @Override

@@ -10,9 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
+import javax.sql.DataSource;
 
 /**
  * @author 13496
@@ -26,14 +29,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
     private final MyAuthenticationFailureHandler myAuthenticationFailureHandler;
     private final ValidateCodeFilter validateCodeFilter;
+    private final DataSource datasource;
 
     @Autowired
-    public WebSecurityConfig(BackdoorAuthenticationProvider backdoorAuthenticationProvider, UserUdServiceImpl userUdService, MyAuthenticationSuccessHandler myAuthenticationSuccessHandler, MyAuthenticationFailureHandler myAuthenticationFailureHandler, ValidateCodeFilter validateCodeFilter) {
+    public WebSecurityConfig(BackdoorAuthenticationProvider backdoorAuthenticationProvider, UserUdServiceImpl userUdService, MyAuthenticationSuccessHandler myAuthenticationSuccessHandler, MyAuthenticationFailureHandler myAuthenticationFailureHandler, ValidateCodeFilter validateCodeFilter, DataSource datasource) {
         this.backdoorAuthenticationProvider = backdoorAuthenticationProvider;
         this.userUdService = userUdService;
         this.myAuthenticationSuccessHandler = myAuthenticationSuccessHandler;
         this.myAuthenticationFailureHandler = myAuthenticationFailureHandler;
         this.validateCodeFilter = validateCodeFilter;
+        this.datasource = datasource;
     }
 
     /**
@@ -77,8 +82,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .logoutSuccessUrl("/login")
                         .deleteCookies("JESSIONID"))
                 //自定义记住我(未完善)
-                .rememberMe(remeber -> remeber
-                        .rememberMeServices(getRememberMeServices()).key(SECRET_KEY));
+                .rememberMe(d -> d
+                        .tokenRepository(persistentTokenRepository())
+                        .tokenValiditySeconds(3600)
+                        .userDetailsService(userUdService))
+        ;
         //解决中文乱码问题
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
@@ -97,11 +105,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    private TokenBasedRememberMeServices getRememberMeServices() {
-        TokenBasedRememberMeServices services = new TokenBasedRememberMeServices(SECRET_KEY, userUdService);
-        services.setCookieName("_rmbme");
-        //default 14day
-        services.setTokenValiditySeconds(60);
-        return services;
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl persistentTokenRepository = new JdbcTokenRepositoryImpl();
+        persistentTokenRepository.setDataSource(datasource);
+        //数据库没有这个表的话运行下一行，有了就不用
+        //persistentTokenRepository.setCreateTableOnStartup(true);
+        return persistentTokenRepository;
     }
 }

@@ -7,6 +7,8 @@ import com.zbnetwork.blog.app.VO.BlogFrontVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 /**
  * @author 13496
  */
@@ -16,7 +18,11 @@ public interface BlogTrans {
 
     BlogDTO do2Dto(Blog blog);
 
+    List<BlogDTO> listDo2Dto(List<Blog> blogList);
+
     BlogFrontVO dto2FtVo(BlogDTO blogDTO);
+
+    List<BlogFrontVO> listDto2Vo(List<BlogDTO> blogDTOList);
 
     Blog dto2Do(BlogDTO blogDTO);
 

@@ -1,7 +1,7 @@
 package com.zbnetwork.blog.app.controller.front;
 
-import com.zbnetwork.blog.app.utils.validatecode.ValidateCode;
-import com.zbnetwork.blog.app.utils.validatecode.ValidateCodeGenerator;
+import com.zbnetwork.blog.app.utils.validatecode.imagecode.ImageCode;
+import com.zbnetwork.blog.app.utils.validatecode.imagecode.ImageCodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static com.zbnetwork.blog.app.utils.validatecode.ValidateCodeCsts.SESSION_KEY;
+import static com.zbnetwork.blog.app.utils.validatecode.imagecode.ImageCodeCsts.SESSION_KEY;
 
 /**
  * @author 13496
@@ -28,10 +28,10 @@ public class ValidateCodeController {
     }
 
     @GetMapping("/vCode/image")
-    public void createCodeImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ValidateCodeGenerator codeGenerator = new ValidateCodeGenerator(new ServletWebRequest(request));
-        ValidateCode validateCode = codeGenerator.generate();
-        sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, validateCode);
-        ImageIO.write(validateCode.getImage(), "JPG", response.getOutputStream());
+    public void getImageCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ImageCodeGenerator codeGenerator = new ImageCodeGenerator(new ServletWebRequest(request));
+        ImageCode ImageCode = codeGenerator.generate();
+        sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, ImageCode);
+        ImageIO.write(ImageCode.getImage(), "JPG", response.getOutputStream());
     }
 }

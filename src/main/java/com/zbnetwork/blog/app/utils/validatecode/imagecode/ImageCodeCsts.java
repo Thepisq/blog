@@ -1,11 +1,11 @@
-package com.zbnetwork.blog.app.utils.validatecode;
+package com.zbnetwork.blog.app.utils.validatecode.imagecode;
 
 /**
  * @author 13496
  * 验证码常量
  */
-public class ValidateCodeCsts {
-    public static final String SESSION_KEY = "SESSION_KEY_VALIDATE_CODE";
+public class ImageCodeCsts {
+    public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
     /**
      * 图片宽度
      */

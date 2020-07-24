@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-import static com.zbnetwork.blog.app.utils.validatecode.ValidateCodeCsts.SESSION_KEY;
+import static com.zbnetwork.blog.app.utils.validatecode.imagecode.ImageCodeCsts.SESSION_KEY;
 
 /**
  * @author 13496
@@ -50,13 +50,14 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Filter {
             log.info("request : {}", request.getRequestURI());
             try {
                 validate(new ServletWebRequest(request));
+                log.info("验证码验证成功");
             } catch (AuthenticationException e) {
                 log.info("验证码验证失败");
                 authenticationFailureHandler.onAuthenticationFailure(request, response, e);
                 return;
             }
         }
-        log.info("验证码验证成功");
+        log.info("经过了验证码过滤器");
         filterChain.doFilter(request, response);
     }
 

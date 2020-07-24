@@ -1,6 +1,7 @@
 package com.zbnetwork.blog.app.controller.front;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -23,9 +24,14 @@ import java.util.Collection;
 @Slf4j
 @Controller
 public class HomeController {
+    @Autowired
+    BlogController blogController;
+
     @GetMapping(value = {"/", "/index"})
     @PreAuthorize("hasAnyAuthority()")
-    public String index() {
+    public String index(Model model) {
+        ResponseEntity<?> blogs = blogController.getBlogs(1);
+        model.addAttribute("blogs", blogs.getBody());
         return "index";
     }
 

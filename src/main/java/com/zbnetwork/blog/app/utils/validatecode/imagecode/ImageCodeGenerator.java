@@ -1,4 +1,4 @@
-package com.zbnetwork.blog.app.utils.validatecode;
+package com.zbnetwork.blog.app.utils.validatecode.imagecode;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -8,12 +8,12 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import static com.zbnetwork.blog.app.utils.validatecode.ValidateCodeCsts.*;
+import static com.zbnetwork.blog.app.utils.validatecode.imagecode.ImageCodeCsts.*;
 
 /**
  * @author 13496
  */
-public class ValidateCodeGenerator {
+public class ImageCodeGenerator {
     /**
      * 验证码中可以出现的字符,去除了部分易错的字符o0Oo0Ooo0o
      */
@@ -22,19 +22,19 @@ public class ValidateCodeGenerator {
     private int height;
     private int codeLength;
 
-    public ValidateCodeGenerator(ServletWebRequest request) {
+    public ImageCodeGenerator(ServletWebRequest request) {
         this.width = ServletRequestUtils.getIntParameter(request.getRequest(), "width", WIDTH);
         this.height = ServletRequestUtils.getIntParameter(request.getRequest(), "height", HEIGHT);
         this.codeLength = ServletRequestUtils.getIntParameter(request.getRequest(), "length", CODE_LENGTH);
     }
 
-    public ValidateCodeGenerator() {
+    public ImageCodeGenerator() {
         this.width = WIDTH;
         this.height = HEIGHT;
         this.codeLength = CODE_LENGTH;
     }
 
-    public ValidateCode generate() {
+    public ImageCode generate() {
         //初始化图片
         BufferedImage codeImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics g = codeImg.getGraphics();
@@ -49,7 +49,7 @@ public class ValidateCodeGenerator {
         //结束
         g.dispose();
 
-        return new ValidateCode(codeImg, code.toString(), EXPIRE_SECOND);
+        return new ImageCode(codeImg, code.toString(), EXPIRE_SECOND);
     }
 
     private String drawAndGenerateCodes(Graphics g, int codeLength) {
