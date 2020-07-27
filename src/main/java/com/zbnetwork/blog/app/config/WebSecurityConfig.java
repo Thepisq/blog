@@ -30,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final MyAuthenticationFailureHandler myAuthenticationFailureHandler;
     private final ValidateCodeFilter validateCodeFilter;
     private final DataSource datasource;
-
     @Autowired
     public WebSecurityConfig(BackdoorAuthenticationProvider backdoorAuthenticationProvider, UserUdServiceImpl userUdService, MyAuthenticationSuccessHandler myAuthenticationSuccessHandler, MyAuthenticationFailureHandler myAuthenticationFailureHandler, ValidateCodeFilter validateCodeFilter, DataSource datasource) {
         this.backdoorAuthenticationProvider = backdoorAuthenticationProvider;
@@ -63,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
                 //限定角色(role)及其资源(url)
                 .authorizeRequests(a -> a
-                        .antMatchers("/").permitAll()
+                        .antMatchers("/", "/b/**").permitAll()
                         .antMatchers("/user/**").hasRole("USER")
                         .antMatchers("/blog/**", "/editor").hasRole("BLOG")
                         .antMatchers("/admin/**", "/users/**", "/blogs/**").hasRole("ADMIN"))
@@ -95,7 +94,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/static/**");
     }
 

@@ -12,6 +12,7 @@ function login() {
     if (username.val().trim().length < 1 || password.val().trim().length < 1) {
         return false;
     }
+    subBtn.prop("disabled", true)
     subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated");
     $.ajax({
         type: 'POST',
@@ -30,23 +31,26 @@ function login() {
             if (data.status != null) {
                 var status = data.status;
                 if (status == "fail") {
-                    subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated");
-                    loginInfo.html("<p style=\"text-align: center\" class=\"text-danger\">账号或密码或验证码有误</p>");
+                    subBtn.prop("disabled", false)
+                    subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated")
+                    loginInfo.html("<p style=\"text-align: center\" class=\"text-danger\">账号或密码或验证码有误</p>")
                 } else if (status == "success") {
-                    subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated bg-success");
-                    loginInfo.html("<p style=\"text-align: center\" class=\"text-primary\">登录成功</p>");
+                    subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated bg-success")
+                    loginInfo.html("<p style=\"text-align: center\" class=\"text-primary\">登录成功</p>")
                     window.setTimeout(function () {
                         window.location = "/";
                     }, 1000);
                 }
             } else {
-                subBtn.toggleClass("progress-bar progress-bar-striped bg=danger");
+                subBtn.prop("disabled", false)
+                subBtn.toggleClass("progress-bar progress-bar-striped bg=danger")
                 subBtn.val("/ / /Warning/ / /")
-                alert("发生奇怪的事情了呢\n请刷新或是查看控制台日志");
+                alert("发生奇怪的事情了呢\n请刷新或是查看控制台日志")
                 console.log(data)
             }
         },
         fail: function () {
+            subBtn.prop("disabled", false)
             subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated")
         }
     });

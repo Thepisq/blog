@@ -35,6 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        log.info("经过了JwtAuthenticationFilter");
         String headerToken = request.getHeader(jwtUtil.getHeader());
         if (headerToken != null && !headerToken.isEmpty()) {
             String username = Objects.requireNonNull(jwtUtil.getClaims(headerToken).getSubject(), "jwt token 的 subject 不存在");

@@ -82,6 +82,7 @@ function checkForSubmit() {
 }
 
 function register() {
+    disable_submitBtn(true)
     $.ajax({
         type: 'POST',
         url: '/register',
@@ -94,16 +95,23 @@ function register() {
         success: function (data) {
             if (data == 1) {
                 subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated bg-success");
-                subBtn.val("注册成功");
+                $("#register_result").val("注册成功");
                 window.setTimeout(function () {
                     window.location = "/login";
                 }, 1500);
             } else if (data == 0) {
+                disable_submitBtn(false)
                 subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated bg-warning");
-                alert("发生错误，请稍后重试");
-                window.location.reload()
+                $("#register_result").val("发生错误，请稍后重试");
+            } else {
+                alert("警告，发生错误")
+                window.location = "/register"
             }
-
+        },
+        fail: function () {
+            disable_submitBtn(false)
+            subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated bg-warning");
+            $("#register_result").val("发生错误，请稍后重试");
         }
     });
 }

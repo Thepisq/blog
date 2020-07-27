@@ -39,7 +39,7 @@ public class BlogServiceImpl implements BlogService {
         if (null == user) {
             throw new RuntimeException("找不到Blog{id=[" + blog.getId() + "]}的作者{id=[" + blog.getAuthorId() + "]}");
         }
-        return BlogTrans.do2DtoWithUser(blog, user);
+        return BlogTrans.INSTANCE.do2DtoWithUser(blog, user);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class BlogServiceImpl implements BlogService {
         if (null == user) {
             throw new RuntimeException("找不到Blog{id=[" + blog.getId() + "]}的作者{id=[" + blog.getAuthorId() + "]}");
         }
-        return BlogTrans.do2DtoWithUser(blog, user);
+        return BlogTrans.INSTANCE.do2DtoWithUser(blog, user);
     }
 
     @Override
@@ -58,7 +58,9 @@ public class BlogServiceImpl implements BlogService {
         PageHelper.startPage(pageNum, pageSize);
         List<Blog> blogList = new ArrayList<>(blogMapper.select(c -> c));
         System.out.println("[BlogService.findAll]-->: 一共查出了{" + blogList.size() + "}条数据, pageSize: " + pageSize);
-        return BlogTrans.INSTANCE.listDo2Dto(blogList);
+        List<UserDTO> userList = new ArrayList<>(blogList.size());
+        blogList.forEach(blog -> userList.add(userService.oneUser(blog.getAuthorId())));
+        return BlogTrans.INSTANCE.listDo2DtoWithUser(blogList, userList);
     }
 
     @Override

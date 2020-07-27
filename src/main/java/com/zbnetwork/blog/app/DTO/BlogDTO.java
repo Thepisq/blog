@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author 13496
@@ -23,8 +23,9 @@ public class BlogDTO {
     private Integer clicks;
     private Integer collects;
     private Integer comments;
-    private Date firstPushDate;
-    private Date lastPushDate;
+    private LocalDateTime firstPushDate;
+    private LocalDateTime lastPushDate;
     private Integer topicId;
     private String content;
+    private String contentView;
 }

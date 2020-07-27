@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.zbnetwork.blog.app.utils.Constants.pageSize;
@@ -31,7 +31,7 @@ public class BlogController {
         this.blogService = blogService;
     }
 
-    @GetMapping("/blog/get={id}")
+    @GetMapping("/b/{id}")
     public ResponseEntity<?> getBlog(@PathVariable Long id) {
         BlogDTO blogDTO = blogService.oneBlog(id);
         return ResponseEntity.ok(BlogTrans.INSTANCE.dto2FtVo(blogDTO));
@@ -45,18 +45,19 @@ public class BlogController {
 
     @PostMapping("/blog/add")
     public ResponseEntity<?> addBlog(@RequestParam String title, @RequestParam String content, @RequestParam Integer topicId) {
-        Blog blog = new Blog();
+        UserUd currentUser = (UserUd) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("获取User对象:\n" + currentUser.toString());
 
+        Blog blog = new Blog();
         blog.setId(idWorker.nextId());
         blog.setTitle(title);
         blog.setContent(content);
         blog.setTopicId(topicId);
-        System.out.println("获取Blog对象:\n" + blog.toString());
-        UserUd currentUser = (UserUd) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("获取User对象:\n" + currentUser.toString());
-        blog.setFirstPushDate(new Date());
-        blog.setLastPushDate(new Date());
+        blog.setFirstPushDate(LocalDateTime.now());
+        blog.setLastPushDate(LocalDateTime.now());
         blog.setAuthorId(currentUser.getId());
+
+        System.out.println("获取Blog对象:\n" + blog.toString());
         return ResponseEntity.status(HttpStatus.CREATED).body(blogService.saveBlog(blog));
     }
 

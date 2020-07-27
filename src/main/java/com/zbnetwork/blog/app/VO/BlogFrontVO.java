@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author 13496
@@ -24,8 +23,9 @@ public class BlogFrontVO implements Serializable {
     private Integer clicks;
     private Integer collects;
     private Integer comments;
-    private Date firstPushDate;
-    private Date lastPushDate;
+    private String firstPushDate;
+    private String lastPushDate;
     private Integer topicId;
     private String content;
+    private String contentView;
 }

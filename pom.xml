@@ -81,8 +81,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
-			<artifactId>druid-spring-boot-starter</artifactId>
-			<version>1.1.17</version>
+			<artifactId>druid</artifactId>
+			<version>1.1.23</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mybatis.dynamic-sql</groupId>
@@ -103,6 +103,16 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-jwt</artifactId>
 			<version>1.1.1.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.10.6</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.72</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.maven.plugins</groupId>

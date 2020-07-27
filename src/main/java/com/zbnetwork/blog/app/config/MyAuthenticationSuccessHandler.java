@@ -1,6 +1,7 @@
 package com.zbnetwork.blog.app.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zbnetwork.blog.app.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,8 @@ import java.util.HashMap;
 public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
@@ -28,6 +31,8 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         response.setContentType("application/json;charset=UTF-8");
         //设定返回的Json数据
         HashMap<String, Object> result = new HashMap<>(8);
+        String token = jwtUtil.signToken(authentication.getPrincipal().toString());
+        result.put("token", token);
         result.put("status", "success");
         response.getWriter().write(objectMapper.writeValueAsString(result));
         //使用HttpServletResponse.getWriter()方法

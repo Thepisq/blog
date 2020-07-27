@@ -18,6 +18,8 @@ import java.util.Objects;
 
 /**
  * @author 13496
+ * 使用ConfigurationProperties获取yml中的配置
+ * 使用@Autowired注入JwtUtil对象，直接new获取不到yml配置的值
  */
 @Data
 @Component
@@ -29,12 +31,11 @@ public class JwtUtil implements Serializable {
     private String header;
 
     /**
-     * @param subject 发放token对象的信息，比如User对象的username
-     * @return
+     * @param subject 发放token对象的信息，比如User对象的username之类的
+     * @return token字符串
      */
     public String signToken(String subject) {
         Date expireDate = new Date(System.currentTimeMillis() + expireIn.toMillis());
-        System.out.println(Encoders.BASE64.encode(secretKey.getBytes()).toString());
         //根据字节长度选择相应的 HMAC 算法
         Key key = Keys.hmacShaKeyFor(Encoders.BASE64.encode(secretKey.getBytes()).getBytes());
         return Jwts.builder()
@@ -74,5 +75,6 @@ public class JwtUtil implements Serializable {
         Claims tokenClaims = Objects.requireNonNull(getClaims(token));
         return tokenClaims.getSubject();
     }
+
 
 }

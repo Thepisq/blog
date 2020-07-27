@@ -46,7 +46,22 @@ $(document).ready(function () {
                 xhr.setRequestHeader(header, token)
             },
             success: function (data) {
-                console.log("发送成功:\n" + data)
+                $("#submit_blog_btn").prop("disabled", true)
+                if (data.status == "success") {
+                    $("#submit_result").val("发布成功")
+                    $("#submit_blog_btn").toggleClass("progress-bar progress-bar-striped progress-bar-animated bg-success")
+                    window.setTimeout(function () {
+                        window.location = "/";
+                    }, 1000);
+                } else if (data.status == "fail") {
+                    $("#submit_result").val("发布成功")
+
+                }
+            },
+            fail: function () {
+                alert("发生奇怪的事情了呢\n请重试或是查看控制台日志")
+                console.log(data)
+                $("#submit_blog_btn").prop("disabled", false)
             }
         })
         return false
