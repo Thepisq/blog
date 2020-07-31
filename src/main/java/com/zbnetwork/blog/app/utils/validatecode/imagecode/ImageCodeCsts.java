@@ -2,7 +2,8 @@ package com.zbnetwork.blog.app.utils.validatecode.imagecode;
 
 /**
  * @author 13496
- * 验证码常量
+ * ImageCodeCsts:
+ *   图片验证码常量
  */
 public class ImageCodeCsts {
     public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";

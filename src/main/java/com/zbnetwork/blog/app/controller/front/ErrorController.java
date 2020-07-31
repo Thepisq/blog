@@ -17,12 +17,17 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RestController
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
+    private final String NO_AUTHORIZE_ERROR_MESSAGE = "Forbidden";
 
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @RequestMapping("/error")
     public ResponseEntity<?> exception(HttpServletRequest request, HttpServletResponse response) {
-        return ResponseEntity.status(response.getStatus()).body(request.getAttribute("javax.servlet.error.message"));
+        String msg = "。";
+        if (NO_AUTHORIZE_ERROR_MESSAGE.equals(request.getAttribute("javax.servlet.error.message"))) {
+            msg = "<a href='/user/upgrade'>充值权限</a>";
+        }
+        return ResponseEntity.status(response.getStatus()).body("error: \n" + request.getAttribute("javax.servlet.error.message") + "\n" + msg);
     }
 
     @Override

@@ -13,7 +13,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
  * @author 13496
- * Spring Security 调用此Service进行登录验证
+ * Spring Security 调用此Service进行数据库用户信息获取
  */
 @Service
 public class UserUdServiceImpl implements UserDetailsService {
@@ -33,4 +33,6 @@ public class UserUdServiceImpl implements UserDetailsService {
                 .map(UserTrans.INSTANCE::do2Ud)
                 .orElseThrow(() -> new UsernameNotFoundException("用户[username: " + username + "]不存在"));
     }
+
+
 }

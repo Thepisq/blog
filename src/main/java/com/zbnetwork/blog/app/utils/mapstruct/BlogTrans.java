@@ -15,6 +15,8 @@ import static com.zbnetwork.blog.app.utils.Constants.indexBlogContentTextSize;
 
 /**
  * @author 13496
+ * 详情可以百度mapstruct
+ * 加了@Mapper(即 @org.mapstruct.Mapper)的接口会在编译后自动生成impl类
  */
 @Mapper(componentModel = "spring")
 public interface BlogTrans {
@@ -69,8 +71,15 @@ public interface BlogTrans {
 
     default BlogDTO do2DtoWithUser(Blog blog, UserDTO user) {
         BlogDTO dto = BlogTrans.INSTANCE.do2Dto(blog);
-        dto.setContentView(dto.getContent().replaceAll("<(?!p|br|/p|br/)[^>]+>", "").substring(0, indexBlogContentTextSize) + "...");
+        //如果有好的地方的话下面这段代码可以换到那里
+        //------------------------------------  1、去除所有html标签 2、简略内容 3、设置作者名
+        String contentView = dto.getContent().replaceAll("<[^>]+>", "");
+        dto.setContentView(contentView.substring(0, Math.min(contentView.length(), indexBlogContentTextSize)));
+        if (dto.getContentView().length() == indexBlogContentTextSize) {
+            dto.setContentView(dto.getContentView() + "...");
+        }
         dto.setAuthorName(user.getUsername());
+        //-------------------------------------
         return dto;
     }
 }

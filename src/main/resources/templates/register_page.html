@@ -32,15 +32,16 @@
             <div id="valid_password"></div>
         </div>
         <div class="form-group">
+            <label for="recheck" class="sr-only">确认密码</label>
+            <input type="password" id="recheck" name="recheck" class="form-control"
+                   placeholder="再次输入密码" required>
+            <div id="valid_recheck"></div>
+        </div>
+        <div class="form-group">
             <label for="validateCode" class="sr-only" hidden>验证码</label>
             <input type="password" id="validateCode" name="validateCode" class="form-control" placeholder="验证码"
                    required>
             <img id="codeImg" src="/vCode/image" alt="点击切换图片">
-            <script>
-                $("#codeImg").click(function () {
-                    $("#codeImg").attr("src", "/vCode/image?t=" + new Date().getTime());
-                })
-            </script>
         </div>
         <div id="register_result">
             <!--提交后返回的结果-->

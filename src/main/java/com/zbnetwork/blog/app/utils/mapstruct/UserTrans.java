@@ -3,7 +3,7 @@ package com.zbnetwork.blog.app.utils.mapstruct;
 import com.zbnetwork.blog.app.DO.User;
 import com.zbnetwork.blog.app.DTO.UserDTO;
 import com.zbnetwork.blog.app.VO.UserFrontVO;
-import com.zbnetwork.blog.app.utils.role.UserUd;
+import com.zbnetwork.blog.app.utils.userdetails.UserUd;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -13,9 +13,7 @@ import java.util.List;
 
 /**
  * @author 13496
- * do : from Database
- * dto : from Controller to Service OR reverse
- * vo : from Controller to Browser
+ * 详情可以百度mapstruct
  * 加了@Mapper(即 @org.mapstruct.Mapper)的接口会在编译后自动生成impl类
  */
 @Mapper(componentModel = "spring")

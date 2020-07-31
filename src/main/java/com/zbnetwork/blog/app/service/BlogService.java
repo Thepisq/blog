@@ -26,6 +26,8 @@ public interface BlogService {
      */
     int saveBlog(Blog blog);
 
+    int saveBlog(String title, String content, Integer topicId);
+
     /**
      * update one blog
      */

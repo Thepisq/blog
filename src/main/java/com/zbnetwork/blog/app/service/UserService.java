@@ -2,6 +2,7 @@ package com.zbnetwork.blog.app.service;
 
 import com.zbnetwork.blog.app.DO.User;
 import com.zbnetwork.blog.app.DTO.UserDTO;
+import com.zbnetwork.blog.app.utils.userdetails.UserUd;
 
 import java.util.List;
 
@@ -21,6 +22,8 @@ public interface UserService {
      */
     int saveUser(User user);
 
+    int saveUser(String username, String password);
+
     /**
      * update one user
      */
@@ -37,4 +40,9 @@ public interface UserService {
     long findUserExists(String username);
 
     long findUserExists(Long id);
+
+    /**
+     * upgrade User's authorize (up to ROLE_BLOG)
+     */
+    int upgrade(UserUd userUd);
 }

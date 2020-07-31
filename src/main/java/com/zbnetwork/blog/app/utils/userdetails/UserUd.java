@@ -1,4 +1,4 @@
-package com.zbnetwork.blog.app.utils.role;
+package com.zbnetwork.blog.app.utils.userdetails;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * @author 13496
- * 用户表user对应的类，实现了UserDetails接口，成为登录验证的信息类
+ * 用户表user对应的类，实现了UserDetails接口，作为Spring security中登录认证的用户类
  */
 @Component
 @Data

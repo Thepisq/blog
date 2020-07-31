@@ -1,22 +1,18 @@
-package com.zbnetwork.blog.app.config;
+package com.zbnetwork.blog.app.config.validatecodeauthentication;
 
 import com.zbnetwork.blog.app.exception.ValidateCodeException;
 import com.zbnetwork.blog.app.utils.validatecode.ValidateCode;
 import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,46 +24,52 @@ import static com.zbnetwork.blog.app.utils.validatecode.imagecode.ImageCodeCsts.
 
 /**
  * @author 13496
+ * ValidateCodeFilter:
+ * 验证码过滤器
+ * 被添加在用户名密码验证之前(见WebSecurityConfig)
  * 这个过滤器继承了OncePerRequestFilter，目的在于接受 spring 的管理，它能保证我们的过滤器在一次请求中只被调用一次
  */
 @Slf4j
-@Component("validateCodeFilter")
-public class ValidateCodeFilter extends OncePerRequestFilter implements Filter {
+@Component
+public class ValidateCodeFilter extends OncePerRequestFilter {
     private final AuthenticationFailureHandler authenticationFailureHandler;
-    private final SessionStrategy sessionStrategy;
     private static final String VALIDATE_CODE_PARAMETER = "validateCode";
     private static final String PATH_LOGIN = "/login";
 
-    @Autowired
-    public ValidateCodeFilter(AuthenticationFailureHandler authenticationFailureHandler, SessionStrategy sessionStrategy) {
+    public ValidateCodeFilter(AuthenticationFailureHandler authenticationFailureHandler) {
         this.authenticationFailureHandler = authenticationFailureHandler;
-        this.sessionStrategy = sessionStrategy;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        log.info("经过了ValidateCodeFilter");
+        log.info("header: " + request.getHeader("Authorization"));
         if (StringUtils.equals(PATH_LOGIN, request.getRequestURI()) && StringUtils.equalsIgnoreCase(request.getMethod(), HttpMethod.POST.name())) {
             log.info("request : {}", request.getRequestURI());
             try {
-                validate(new ServletWebRequest(request));
+                validate(request);
                 log.info("验证码验证成功");
             } catch (AuthenticationException e) {
                 log.info("验证码验证失败");
+                //认证错误处理器 处理 验证失败 事件
                 authenticationFailureHandler.onAuthenticationFailure(request, response, e);
                 return;
             }
         }
-        log.info("经过了验证码过滤器");
+
         filterChain.doFilter(request, response);
     }
 
-    private void validate(ServletWebRequest request) throws ServletRequestBindingException {
-        Assert.notNull(ServletRequestUtils.getStringParameter(request.getRequest(), VALIDATE_CODE_PARAMETER));
-        String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), VALIDATE_CODE_PARAMETER).toLowerCase();
+    private void validate(HttpServletRequest request) throws ServletRequestBindingException {
+        Assert.notNull(ServletRequestUtils.getStringParameter(request, VALIDATE_CODE_PARAMETER));
+        String codeInRequest = ServletRequestUtils.getStringParameter(request, VALIDATE_CODE_PARAMETER).toLowerCase();
         if (StringUtils.isEmpty(codeInRequest)) {
             throw new ValidateCodeException("验证码不能为空");
         }
-        ValidateCode codeInSession = (ValidateCode) sessionStrategy.getAttribute(request, SESSION_KEY);
+
+        ValidateCode codeInSession = (ValidateCode) request.getSession().getAttribute(SESSION_KEY);
+
+        System.out.println("验证验证码中\n待验证: " + codeInRequest + "\n验证码: " + codeInSession);
         if (Objects.isNull(codeInSession)) {
             throw new ValidateCodeException("验证码不存在");
         }
@@ -77,6 +79,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Filter {
         if (!StringUtils.equals(codeInRequest, codeInSession.getCode())) {
             throw new ValidateCodeException("验证码不一致");
         }
-        sessionStrategy.removeAttribute(request, SESSION_KEY);
+        request.getSession().removeAttribute(SESSION_KEY);
     }
 }

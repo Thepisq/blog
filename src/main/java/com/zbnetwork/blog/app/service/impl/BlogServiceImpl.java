@@ -8,10 +8,14 @@ import com.zbnetwork.blog.app.mapper.BlogDynamicSqlSupport;
 import com.zbnetwork.blog.app.mapper.BlogMapper;
 import com.zbnetwork.blog.app.service.BlogService;
 import com.zbnetwork.blog.app.service.UserService;
+import com.zbnetwork.blog.app.utils.IdWorker;
 import com.zbnetwork.blog.app.utils.mapstruct.BlogTrans;
+import com.zbnetwork.blog.app.utils.userdetails.UserUd;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +26,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
  */
 @Service
 public class BlogServiceImpl implements BlogService {
+    private final IdWorker idWorker = new IdWorker();
     private final BlogMapper blogMapper;
     private final UserService userService;
 
@@ -69,7 +74,27 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    public int saveBlog(String title, String content, Integer topicId) {
+        UserUd currentUser = (UserUd) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println("获取User对象:\n" + currentUser.toString());
+
+        Blog blog = new Blog();
+        blog.setId(idWorker.nextId());
+        blog.setTitle(title);
+        blog.setContent(content);
+        blog.setTopicId(topicId);
+        blog.setFirstPushDate(LocalDateTime.now());
+        blog.setLastPushDate(LocalDateTime.now());
+        blog.setAuthorId(currentUser.getId());
+
+        System.out.println("获取Blog对象:\n" + blog.toString());
+
+        return blogMapper.insertSelective(blog);
+    }
+
+    @Override
     public int updateBlog(BlogDTO blogDTO) {
+        blogDTO.setLastPushDate(LocalDateTime.now());
         return blogMapper.updateByPrimaryKeySelective(BlogTrans.INSTANCE.dto2Do(blogDTO));
     }
 }

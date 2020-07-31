@@ -12,6 +12,8 @@ import static com.zbnetwork.blog.app.utils.validatecode.imagecode.ImageCodeCsts.
 
 /**
  * @author 13496
+ * ImageCodeGenerator:
+ *   验证码生成类
  */
 public class ImageCodeGenerator {
     /**
@@ -49,7 +51,7 @@ public class ImageCodeGenerator {
         //结束
         g.dispose();
 
-        return new ImageCode(codeImg, code.toString(), EXPIRE_SECOND);
+        return new ImageCode(codeImg, code, EXPIRE_SECOND);
     }
 
     private String drawAndGenerateCodes(Graphics g, int codeLength) {

@@ -11,4 +11,8 @@ public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException(String username) {
         super("找不到用户{username=[" + username + "]}");
     }
+
+    public UserNotFoundException(Long id, String username) {
+        super("找不到用户{id=[" + id + "], username=[" + username + "]}");
+    }
 }

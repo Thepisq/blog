@@ -8,6 +8,9 @@ import java.awt.image.BufferedImage;
 
 /**
  * @author 13496
+ * ImageCode:
+ *   图片验证码类
+ *   继承了验证码类(ValidateCode)
  */
 @Data
 @EqualsAndHashCode(callSuper = true)

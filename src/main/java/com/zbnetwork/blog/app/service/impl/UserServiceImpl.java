@@ -7,7 +7,10 @@ import com.zbnetwork.blog.app.exception.UserNotFoundException;
 import com.zbnetwork.blog.app.mapper.UserDynamicSqlSupport;
 import com.zbnetwork.blog.app.mapper.UserMapper;
 import com.zbnetwork.blog.app.service.UserService;
+import com.zbnetwork.blog.app.utils.IdWorker;
 import com.zbnetwork.blog.app.utils.mapstruct.UserTrans;
+import com.zbnetwork.blog.app.utils.userdetails.UserUd;
+import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +24,7 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
  */
 @Service
 public class UserServiceImpl implements UserService {
-
+    private final IdWorker idWorker = new IdWorker();
     private final UserMapper userMapper;
 
     @Autowired
@@ -48,6 +51,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int saveUser(String username, String password) {
+        Assert.notNull(username, "用户名不能为空");
+        Assert.notNull(password, "密码不能为空");
+        User user = new User();
+        user.setId(idWorker.nextId());
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setRoles("USER");
+        return userMapper.insertSelective(user);
+    }
+
+    @Override
     public int updateUser(UserDTO userDTO) {
         return userMapper.updateByPrimaryKeySelective(UserTrans.INSTANCE.dto2Do(userDTO));
     }
@@ -69,4 +84,16 @@ public class UserServiceImpl implements UserService {
     public long findUserExists(Long id) {
         return userMapper.count(c -> c.where(UserDynamicSqlSupport.id, isEqualTo(id)));
     }
+
+    @Override
+    public int upgrade(UserUd userUd) {
+        User user = userMapper.selectOne(c -> c.where(UserDynamicSqlSupport.id, isEqualTo(userUd.getId())))
+                .orElseThrow(() -> new UserNotFoundException(userUd.getId()));
+        if (user.getRoles().matches("BLOG")) {
+            return 0;
+        }
+        user.setRoles(user.getRoles() + "," + "BLOG");
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
+
 }

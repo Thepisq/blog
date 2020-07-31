@@ -1,28 +1,32 @@
-const _VALID = 1;  /*有效 */
-const _INVALID = 0; /*无效 */
-const _CANCEL = -1; /*取消 */
-const _MIN_USERNAME_LENGTH = 3; /*最低用户名长度 */
-const _MIN_PASSWORD_LENGTH = 8; /*最低密码长度 */
+const _VALID = 1  /*有效 */
+const _INVALID = 0 /*无效 */
+const _CANCEL = -1 /*取消 */
+const _MIN_USERNAME_LENGTH = 6 /*最低用户名长度 */
+const _MIN_PASSWORD_LENGTH = 8 /*最低密码长度 */
 
 //获取CSRF token,防止ajax请求被视为跨域请求
-var header = $("meta[name='_csrf_header']").attr("content");
-var token = $("meta[name='_csrf']").attr("content");
+var header = $("meta[name='_csrf_header']").attr("content")
+var token = $("meta[name='_csrf']").attr("content")
 
-var input_username = $("#username");
-var valid_username = $("#valid_username");
+var input_username = $("#username")
+var valid_username = $("#valid_username")
 
-var input_password = $("#password");
-var valid_password = $("#valid_password");
-var subBtn = $("#submitBtn");
-var patrn = /[@#\$%\^&\*]+/g;
+var input_password = $("#password")
+var valid_password = $("#valid_password")
+
+var input_recheck = $("#recheck")
+var valid_recheck = $("#valid_recheck")
+
+var subBtn = $("#submitBtn")
+var patrn = /[@#\$%\^&\*]+/g
 
 function checkForExists() {
-    input_username.val(input_username.val().trim());
+    input_username.val(input_username.val().trim())
     if (input_username.val().trim().length < 1) {
         validCheck(input_username, valid_username, _CANCEL, "")
     } else if (patrn.test(input_username.val())) {
         validCheck(input_username, valid_username, _INVALID, "用户名不能有符号")
-    } else if (input_username.val().trim().length > _MIN_USERNAME_LENGTH) {
+    } else if (input_username.val().trim().length >= _MIN_USERNAME_LENGTH) {
         $.ajax({
             type: 'POST',
             url: '/checkForUserExists',
@@ -40,7 +44,9 @@ function checkForExists() {
                 }
 
             }
-        });
+        })
+    } else {
+        validCheck(input_username, valid_username, _CANCEL, "")
     }
 }
 
@@ -63,18 +69,30 @@ function disable_submitBtn(disable) {
 }
 
 function checkForPass() {
-    input_password.val(input_password.val().trim());
-    if (input_password.val().trim().length > _MIN_PASSWORD_LENGTH) {
+    input_password.val(input_password.val().trim())
+    if (input_password.val().trim().length >= _MIN_PASSWORD_LENGTH) {
         validCheck(input_password, valid_password, _VALID, "")
     } else if (input_password.val().trim().length > 0) {
-        validCheck(input_password, valid_password, _INVALID, "密码长度应为6 ~ 16个字符")
+        validCheck(input_password, valid_password, _INVALID, "密码长度最少为" + _MIN_PASSWORD_LENGTH + "个字符")
     } else {
         validCheck(input_password, valid_password, _CANCEL, "")
+    }
+    if (input_recheck.val().trim() > 0) {
+        checkForRecheck()
+    }
+}
+
+function checkForRecheck() {
+    input_recheck.val(input_recheck.val().trim())
+    if (input_recheck.val().trim() != input_password.val().trim()) {
+        validCheck(input_recheck, valid_recheck, _INVALID, "请输入一致的密码")
+    } else {
+        validCheck(input_recheck, valid_recheck, _VALID, "")
     }
 }
 
 function checkForSubmit() {
-    if (input_username.hasClass("is-valid") && input_password.hasClass("is-valid")) {
+    if (input_username.hasClass("is-valid") && input_password.hasClass("is-valid") && input_recheck.hasClass("is-valid")) {
         disable_submitBtn(false)
     } else {
         disable_submitBtn(true)
@@ -87,7 +105,11 @@ function register() {
         type: 'POST',
         url: '/register',
         dataType: 'json',
-        data: $("#register_form").serialize(),
+        data: {
+            "username": input_username.val().trim(),
+            "password": input_password.val().trim(),
+            "validateCode": $("#validateCode").val().trim()
+        },
         beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
             subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated")
@@ -124,7 +146,13 @@ $(document).ready(function () {
     input_password.bind('input propertychange', function () {
         checkForPass()
     });
+    input_recheck.bind('input propertychange', function () {
+        checkForRecheck()
+    });
     subBtn.click(function () {
         register()
+    })
+    $("#codeImg").click(function () {
+        $("#codeImg").attr("src", "/vCode/image?t=" + new Date().getTime());
     })
 });

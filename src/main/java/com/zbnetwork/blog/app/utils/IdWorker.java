@@ -102,6 +102,10 @@ public class IdWorker {
         return nextId;
     }
 
+    public String nextIdStr() {
+        return String.valueOf(nextId());
+    }
+
     private long tilNextMillis(final long lastTimestamp) {
         long timestamp = this.timeGen();
         while (timestamp <= lastTimestamp) {

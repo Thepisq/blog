@@ -31,9 +31,11 @@ function login() {
             if (data.status != null) {
                 var status = data.status;
                 if (status == "fail") {
+                    if (data.msg == "Bad credentials") data.msg = "用户名或密码错误"
                     subBtn.prop("disabled", false)
                     subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated")
-                    loginInfo.html("<p style=\"text-align: center\" class=\"text-danger\">账号或密码或验证码有误</p>")
+                    loginInfo.html("<p style=\"text-align: center\" class=\"text-danger\">" + data.msg + "</p>")
+                    resetCode()
                 } else if (status == "success") {
                     subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated bg-success")
                     loginInfo.html("<p style=\"text-align: center\" class=\"text-primary\">登录成功</p>")
@@ -56,8 +58,15 @@ function login() {
     });
 }
 
+function resetCode() {
+    $("#codeImg").attr("src", "/vCode/image?t=" + new Date().getTime());
+}
+
 $(document).ready(function () {
     subBtn.click(function () {
         login()
     });
+    $("#codeImg").click(function () {
+        resetCode()
+    })
 });
