@@ -11,10 +11,11 @@
     <script th:src="@{bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js}"></script>
     <link rel="stylesheet" th:href="@{bootstrap-4.4.1-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{css/signin.css}">
+    <link rel="stylesheet" th:href="@{css/common.css}">
 </head>
 <body>
+<div th:include="navigate::navbar"></div>
 <div class="container">
-    <div th:include="navigate::navbar"></div>
     <form id="register_form" class="form-signin" method="post" style="max-width: 420px;align-content: center"
           onsubmit="return false" novalidate>
         <h2 class="form-signin-heading">注册</h2>

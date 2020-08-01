@@ -43,7 +43,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         log.info("经过了ValidateCodeFilter");
-        log.info("header: " + request.getHeader("Authorization"));
         if (StringUtils.equals(PATH_LOGIN, request.getRequestURI()) && StringUtils.equalsIgnoreCase(request.getMethod(), HttpMethod.POST.name())) {
             log.info("request : {}", request.getRequestURI());
             try {
@@ -69,7 +68,6 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
 
         ValidateCode codeInSession = (ValidateCode) request.getSession().getAttribute(SESSION_KEY);
 
-        System.out.println("验证验证码中\n待验证: " + codeInRequest + "\n验证码: " + codeInSession);
         if (Objects.isNull(codeInSession)) {
             throw new ValidateCodeException("验证码不存在");
         }

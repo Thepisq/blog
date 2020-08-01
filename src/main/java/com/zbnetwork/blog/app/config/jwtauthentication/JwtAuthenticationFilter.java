@@ -4,7 +4,6 @@ import com.zbnetwork.blog.app.service.impl.UserUdServiceImpl;
 import com.zbnetwork.blog.app.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 
+import static com.zbnetwork.blog.app.utils.Constants.tokenInHeader;
+
 /**
  * @author 13496
  * JwtAuthenticationFilter:
@@ -29,13 +30,11 @@ import java.util.Collection;
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final UserUdServiceImpl userUdService;
     private final JwtUtil jwtUtil;
     private final RequestMatcher reqMatcher;
 
     @Autowired
     public JwtAuthenticationFilter(UserUdServiceImpl userUdService, JwtUtil jwtUtil) {
-        this.userUdService = userUdService;
         this.jwtUtil = jwtUtil;
         this.reqMatcher = new RequestHeaderRequestMatcher("Authorization");
     }
@@ -43,18 +42,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         log.info("经过了JwtAuthenticationFilter");
-
+        log.info("检查jwt: " + request.getHeader(tokenInHeader));
         if (!reqMatcher.matches(request)) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        String tokenInHeader = StringUtils.removeStart(request.getHeader("Authorization"), "Bearer ");
+        log.info("JwtFilter> \n  header: \n    " + request.getHeader(tokenInHeader));
+        String token = request.getHeader(tokenInHeader);
         Claims claims;
         try {
-            claims = jwtUtil.getClaims(tokenInHeader);
+            claims = jwtUtil.getClaims(token);
         } catch (Exception e) {
-            System.out.println("token解析过程中发生错误: {\n" + e.getMessage() + "}\n");
+            log.info("token解析过程中发生错误: {\n" + e.getMessage() + "}\n");
             filterChain.doFilter(request, response);
             return;
         }
@@ -64,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         authentication.setDetails(new WebAuthenticationDetails(request));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        log.info("header中获取的token: " + jwtUtil.getClaims(token).toString());
         filterChain.doFilter(request, response);
 
     }

@@ -14,6 +14,8 @@ public class Constants {
     public static int pageSize;
     //页面显示的博客内容的字数
     public static int indexBlogContentTextSize;
+    //token保存到header里的名字
+    public static String tokenInHeader;
 
     //非静态的set方法才能从获取yml中的值
     public void setPageSize(int pageSize) {
@@ -22,5 +24,9 @@ public class Constants {
 
     public void setIndexBlogContentTextSize(int textSize) {
         Constants.indexBlogContentTextSize = textSize;
+    }
+
+    public void setTokenInHeader(String str) {
+        Constants.tokenInHeader = str;
     }
 }

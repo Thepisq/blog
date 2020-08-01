@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
+import static com.zbnetwork.blog.app.utils.Constants.tokenInHeader;
+
 /**
  * @author 13496
  * MyAuthenticationSuccessHandler:
@@ -39,8 +41,9 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         String token = jwtUtil.signToken((UserUd) authentication.getPrincipal());
         System.out.println("生成的token: {\n" + token + "\n}");
         response.setContentType("application/json;charset=UTF-8");
-        response.setHeader("Authorization", token);
-        System.out.println("设置好了的header: {\n" + response.getHeader("Authorization") + "}\n");
+        response.setHeader(tokenInHeader, token);
+        System.out.println("header里的token: {\n" + response.getHeader(tokenInHeader) + "\n}"
+                + "内容: {\n" + jwtUtil.getClaims(token).toString() + "\n}");
         //设定返回的Json数据
         Map<String, Object> result = ResultUtil.success();
         response.getWriter().write(objectMapper.writeValueAsString(result));

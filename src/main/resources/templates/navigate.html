@@ -5,62 +5,46 @@
 </head>
 <body>
 <div th:fragment="navbar">
-    <nav class="navbar navbar-expand-md navbar-light bg-info">
-        <a class="navbar-brand" href="/">Blog</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon">
-                <!--此处为折叠后的按钮-->
-            </span>
-        </button>
-        <div id="navbarSupportedContent" class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle " href="#" data-toggle="dropdown">
-                        快捷操作
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="/user">用户页面</a>
-                        <a class="dropdown-item" href="/admin">管理员页面</a>
-                        <a class="dropdown-item" href="/login">登录页面</a>
-                        <a class="dropdown-item" href="/register">注册界面</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/editor">写Blog</a>
-                    </div>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="搜索">
-                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">搜索</button>
-            </form>
+    <nav class="navbar navbar-expand-md fixed-top navbar-light bg-warning">
+        <div class="container">
+            <a class="navbar-brand" href="/">Blog</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon">
+            <!--此处为折叠后的按钮-->
+        </span>
+            </button>
+            <div id="navbarSupportedContent" class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle " href="#" data-toggle="dropdown">
+                            快捷操作
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/user">用户页面</a>
+                            <a class="dropdown-item" href="/admin">管理员页面</a>
+                            <a class="dropdown-item" href="/login">登录页面</a>
+                            <a class="dropdown-item" href="/register">注册界面</a>
+                            <div sec:authorize="hasRole('ROLE_BLOG')" class="dropdown-divider"></div>
+                            <a sec:authorize="hasRole('ROLE_BLOG')" class="dropdown-item" href="/editor">写Blog</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="搜索">
+                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">搜索</button>
+                </form>
+            </div>
         </div>
     </nav>
 </div>
-<div th:fragment="write">
-    <a href="/editor">
-        <table class="table table-borderless">
-            <tr>
-                <td>
-                    <svg width="3em" height="3em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                              d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
-                        <path fill-rule="evenodd"
-                              d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
-                    </svg>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-light">写博客</td>
-            </tr>
-        </table>
-    </a>
-</div>
 <div th:fragment="advertisement">
     <div id="advertisementCarousel" class="carousel slide carousel-fade w-25 float-right" data-ride="carousel">
-        <div data-toggle="popover" title="友情链接" data-content="本应用适合18岁及以上年龄用户，请未满18岁的用户自觉离开">
-            广告 [<a class="text-decoration-none text-dark" href="javascript:void(0);" onclick="removeCarousel()">X</a>]
-        </div>
+        <a tabindex="0" data-toggle="popover" data-trigger="focus" title="友情链接"
+           data-content="本应用适合18岁及以上年龄用户，请未满18岁的用户自觉离开">
+            广告
+        </a>
+        [<a class="text-decoration-none text-dark" href="javascript:void(0);" onclick="removeCarousel()">X</a>]
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595044872126&di=46cf9157214446ee15dfde64d72666ce&imgtype=0&src=http%3A%2F%2Fimg0.imgtn.bdimg.com%2Fit%2Fu%3D3294535560%2C2836415746%26fm%3D214%26gp%3D0.jpg"
@@ -98,11 +82,14 @@
             $('#advertisementCarousel').remove()
         }
 
+        $('.popover-dismiss').popover({
+            trigger: 'focus'
+        })
         //加了才有效
         $('[data-toggle="popover"]').popover()
     </script>
 </div>
-<div th:fragment="info" class="clearfix">
+<div th:fragment="info">
     <p>你的当前用户名是：</p>
     <p sec:authentication="name"></p>
     <p>你的权限是：</p>

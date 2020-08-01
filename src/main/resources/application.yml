@@ -6,6 +6,7 @@ blog:
   constants:
     page-size: 20
     index-blog-content-text-size: 40
+    token-in-header: Authorization
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
