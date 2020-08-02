@@ -58,7 +58,7 @@ $(document).ready(function () {
 
                 }
             },
-            fail: function () {
+            error: function () {
                 alert("发生奇怪的事情了呢\n请重试或是查看控制台日志")
                 console.log(data)
                 $("#submit_blog_btn").prop("disabled", false)

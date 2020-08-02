@@ -12,9 +12,9 @@
         <javaTypeResolver>
             <property name="useJSR310Types" value="true"/>
         </javaTypeResolver>
-        <javaModelGenerator targetPackage="com.zbnetwork.blog.app.DO" targetProject="src/main/java"/>
+        <javaModelGenerator targetPackage="com.liushaonetwork.blog.app.DO" targetProject="src/main/java"/>
 
-        <javaClientGenerator targetPackage="com.zbnetwork.blog.app.mapper" targetProject="src/main/java"/>
+        <javaClientGenerator targetPackage="com.liushaonetwork.blog.app.mapper" targetProject="src/main/java"/>
 
 
         <table tableName="blog"/>
