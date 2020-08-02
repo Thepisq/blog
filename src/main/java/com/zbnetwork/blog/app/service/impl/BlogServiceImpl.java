@@ -11,7 +11,9 @@ import com.zbnetwork.blog.app.service.UserService;
 import com.zbnetwork.blog.app.utils.IdWorker;
 import com.zbnetwork.blog.app.utils.mapstruct.BlogTrans;
 import com.zbnetwork.blog.app.utils.userdetails.UserUd;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,9 @@ public class BlogServiceImpl implements BlogService {
     private final IdWorker idWorker = new IdWorker();
     private final BlogMapper blogMapper;
     private final UserService userService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Autowired
     public BlogServiceImpl(BlogMapper blogMapper, UserService userService) {
@@ -49,11 +54,21 @@ public class BlogServiceImpl implements BlogService {
 
     @Override
     public BlogDTO oneBlog(Long id) {
-        Blog blog = blogMapper.selectOne(c -> c.where(BlogDynamicSqlSupport.id, isEqualTo(id)))
-                .orElseThrow(() -> new RuntimeException("找不到id为{" + id + "}的blog"));
-        UserDTO user = userService.oneUser(blog.getAuthorId());
+        Blog blog = (Blog) redisTemplate.opsForValue().get("blog_"+id);
+        System.out.println("--------------------------------------走缓存");
+        if (blog == null){
+            System.out.println("--------------------------------------走数据库");
+            blog = blogMapper.selectOne(c -> c.where(BlogDynamicSqlSupport.id, isEqualTo(id)))
+                    .orElseThrow(() -> new RuntimeException("找不到id为{" + id + "}的blog"));
+            redisTemplate.opsForValue().set("blog_"+id, blog);
+        }
+        UserDTO user = (UserDTO) redisTemplate.opsForValue().get("user_"+blog.getAuthorId());
         if (null == user) {
-            throw new RuntimeException("找不到Blog{id=[" + blog.getId() + "]}的作者{id=[" + blog.getAuthorId() + "]}");
+            user = userService.oneUser(blog.getAuthorId());
+            if (null == user) {
+                throw new RuntimeException("找不到Blog{id=[" + blog.getId() + "]}的作者{id=[" + blog.getAuthorId() + "]}");
+            }
+            redisTemplate.opsForValue().set("user_"+user.getId(), user);
         }
         return BlogTrans.INSTANCE.do2DtoWithUser(blog, user);
     }

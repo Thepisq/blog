@@ -23,6 +23,10 @@ spring:
   security:
     user:
       password: pass
+  # 阿里云服务器上的redis
+  redis:
+    host: 101.201.142.43
+    port: 6379
 pagehelper:
   helper-dialect: mysql
   reasonable: true

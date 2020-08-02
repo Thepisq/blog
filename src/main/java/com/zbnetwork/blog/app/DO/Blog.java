@@ -1,9 +1,10 @@
 package com.zbnetwork.blog.app.DO;
 
 import javax.annotation.Generated;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Blog {
+public class Blog implements Serializable {
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-27T21:55:08.2416226+08:00", comments = "Source field: blog.id")
     private Long id;
 
