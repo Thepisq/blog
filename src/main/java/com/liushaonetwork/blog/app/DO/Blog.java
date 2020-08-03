@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Blog implements Serializable {
+    private static final long serialVersionUID = -8545220755307856940L;
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-27T21:55:08.2416226+08:00", comments = "Source field: blog.id")
     private Long id;
 

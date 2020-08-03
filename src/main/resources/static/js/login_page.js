@@ -51,7 +51,7 @@ function login() {
                 console.log(data)
             }
         },
-        fail: function () {
+        error: function () {
             subBtn.prop("disabled", false)
             subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated")
         }

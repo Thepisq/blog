@@ -3,10 +3,8 @@ package com.liushaonetwork.blog.app.config.loginauthentication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liushaonetwork.blog.app.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,10 +18,12 @@ import java.util.Map;
  * 在WebSecurityConfig中被指定为登录(.formlogin())的认证失败处理类
  */
 @Slf4j
-@Component
 public class MyAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
-    @Autowired
     private ObjectMapper objectMapper;
+
+    public MyAuthenticationFailureHandler() {
+        objectMapper = new ObjectMapper();
+    }
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {

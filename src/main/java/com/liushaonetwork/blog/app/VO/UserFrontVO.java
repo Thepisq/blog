@@ -13,12 +13,19 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserFrontVO implements Serializable {
-    static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -3007246599838415969L;
+
     private Long userId;
+
     private String nickname;
+
     private String phone;
+
     private String email;
+
     private String introduction;
+
     private int likeNum;
+
     private int blogNum;
 }

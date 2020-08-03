@@ -21,10 +21,10 @@ public class JwtAuthenticationConfigurer<T extends JwtAuthenticationConfigurer<T
 
     @Override
     public void configure(B http) throws Exception {
+        //在WebSecurityConfig.java用@Bean注入，下一行设置的Manager不会为null
         authFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-
         JwtAuthenticationFilter filter = postProcess(authFilter);
-        http.addFilterBefore(filter, LogoutFilter.class);
+        http.addFilterBefore(authFilter, LogoutFilter.class);
     }
 
     public JwtAuthenticationConfigurer<T, B> permissiveRequestUrls(String... urls) {
@@ -33,12 +33,12 @@ public class JwtAuthenticationConfigurer<T extends JwtAuthenticationConfigurer<T
     }
 
     public JwtAuthenticationConfigurer<T, B> successHandler(AuthenticationSuccessHandler successHandler) {
-        authFilter.setAuthenticationSuccessHandler(successHandler);
+        authFilter.setSuccessHandler(successHandler);
         return this;
     }
 
     public JwtAuthenticationConfigurer<T, B> failureHandler(AuthenticationFailureHandler failureHandler) {
-        authFilter.setAuthenticationFailureHandler(failureHandler);
+        authFilter.setFailureHandler(failureHandler);
         return this;
     }
 }

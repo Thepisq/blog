@@ -13,16 +13,12 @@ import static org.mybatis.dynamic.sql.SqlBuilder.isEqualTo;
 
 /**
  * @author 13496
- * Spring Security 调用此Service进行数据库用户信息获取
+ * 在 Spring Security 设置此Service进行数据库用户信息获取
  */
 @Service
 public class MyUserDetailsService implements UserDetailsService {
-    private final UserMapper userMapper;
-
     @Autowired
-    public MyUserDetailsService(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+    private UserMapper userMapper;
 
     /**
      * 重写loadUserByUsername方法来获取数据库中用户信息

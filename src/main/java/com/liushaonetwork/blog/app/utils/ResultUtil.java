@@ -8,6 +8,8 @@ import java.util.Map;
  * @author 13496
  */
 public class ResultUtil implements Serializable {
+    private static final long serialVersionUID = -5027048187176307508L;
+
     public static Map<String, Object> of(String status, Object msg) {
         HashMap<String, Object> result = new HashMap<>(8);
         result.put("status", status);

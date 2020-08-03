@@ -1,9 +1,14 @@
 package com.liushaonetwork.blog.app.config.jwtauthentication;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
@@ -11,7 +16,6 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,8 +27,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.liushaonetwork.blog.app.utils.Constants.TOKEN_PREFIX;
 import static com.liushaonetwork.blog.app.utils.Constants.tokenInHeader;
+import static com.liushaonetwork.blog.app.utils.Constants.tokenPrefix;
 
 /**
  * @author 13496
@@ -32,42 +36,80 @@ import static com.liushaonetwork.blog.app.utils.Constants.tokenInHeader;
  * 获取并验证JWT的过滤器类
  */
 @Slf4j
-@Component
+@Getter
+@Setter
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private AuthenticationManager authenticationManager;
     private AuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
     private AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
     private List<RequestMatcher> permissiveRequestMatchers;
     private final RequestMatcher reqMatcher;
+    ;
 
-    @Autowired
     public JwtAuthenticationFilter() {
         this.reqMatcher = new RequestHeaderRequestMatcher("Authorization");
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+        Assert.notNull(authenticationManager, "authenticationManager must be specified");
+        Assert.notNull(successHandler, "AuthenticationSuccessHandler must be specified");
+        Assert.notNull(failureHandler, "AuthenticationFailureHandler must be specified");
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         log.info("经过了JwtAuthenticationFilter");
         log.info("检查jwt: " + request.getHeader(tokenInHeader));
-        if (!reqMatcher.matches(request) || !request.getHeader(tokenInHeader).startsWith(TOKEN_PREFIX)) {
+        if (!reqMatcher.matches(request)) {
             filterChain.doFilter(request, response);
             return;
         }
         log.info("JwtFilter> \n  header: \n    " + request.getHeader(tokenInHeader));
-        String token = StringUtils.removeStart(request.getHeader(tokenInHeader), TOKEN_PREFIX);
-
+        String token = StringUtils.removeStart(request.getHeader(tokenInHeader), tokenPrefix);
+        Authentication authResult = null;
+        AuthenticationException authException = null;
         try {
-            JwtAuthenticationToken auth = new JwtAuthenticationToken(token);
-        } catch (Exception e) {
-            log.info("token解析过程中发生错误: {\n" + e.getMessage() + "}\n");
-            filterChain.doFilter(request, response);
-            return;
+            if (StringUtils.isNotBlank(token)) {
+                JwtAuthenticationToken authToken = new JwtAuthenticationToken(token);
+                //交给JwtAuthenticationProvider的authenticate()方法处理
+                authResult = getAuthenticationManager().authenticate(authToken);
+            } else {
+                authException = new InsufficientAuthenticationException("token不能为空");
+            }
+        } catch (AuthenticationException e) {
+            authException = e;
+        }
+        if (authResult != null) {
+            successAuthenticationAction(request, response, filterChain, authResult);
+        } else if (!permissiveRequest(request)) {
+            unsuccessAuthenticationAction(request, response, authException);
         }
 
         filterChain.doFilter(request, response);
-
     }
 
+    protected boolean permissiveRequest(HttpServletRequest request) {
+        if (permissiveRequestMatchers == null) {
+            return false;
+        }
+        for (RequestMatcher permissiveMatcher : permissiveRequestMatchers) {
+            if (permissiveMatcher.matches(request)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected void unsuccessAuthenticationAction(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+        SecurityContextHolder.clearContext();
+        failureHandler.onAuthenticationFailure(request, response, authException);
+    }
+
+    protected void successAuthenticationAction(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain, Authentication authResult) throws IOException, ServletException {
+        SecurityContextHolder.getContext().setAuthentication(authResult);
+        successHandler.onAuthenticationSuccess(request, response, authResult);
+    }
 
     public void setPermissiveUrl(String... urls) {
         if (permissiveRequestMatchers == null) {
@@ -78,26 +120,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
-    public void setAuthenticationSuccessHandler(AuthenticationSuccessHandler successHandler) {
-        this.successHandler = successHandler;
-    }
-
-    public void setAuthenticationFailureHandler(AuthenticationFailureHandler failureHandler) {
-        this.failureHandler = failureHandler;
-    }
-
-    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
-    }
-
-    protected AuthenticationManager getAuthenticationManager() {
-        return authenticationManager;
-    }
-
-    @Override
-    public void afterPropertiesSet() throws ServletException {
-        //Assert.notNull(authenticationManager, "authenticationManager不能为空");
-        Assert.notNull(successHandler, "successHandler不能为空");
-        Assert.notNull(failureHandler, "failureHandler不能为空");
-    }
 }

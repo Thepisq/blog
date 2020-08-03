@@ -2,6 +2,10 @@
 
 #### 不定期更新的update一览  
 
+>8/03
+
++统一设置serialVersionUID
+
 >8/02
 
 +添加redis缓存，来自阿里云服务器

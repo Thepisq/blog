@@ -3,6 +3,8 @@ package com.liushaonetwork.blog.app.utils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 /**
  * @author 13496
  * 从yml取配置信息的静态变量类
@@ -17,23 +19,48 @@ public class Constants {
     //token保存到header里的名字
     public static String tokenInHeader;
     //上面一个的前缀
-    public static final String TOKEN_PREFIX = "Bearer ";
-    //自定义jwt字段
-    public static final String TOKEN_PAYLOAD_USERNAME = "username";
-    public static final String TOKEN_PAYLOAD_ROLES = "roles";
+    public static String tokenPrefix;
+    //自定义的token内容(key-value-> key)
+    public static String tokenPayloadUsername;
+    public static String tokenPayloadRoles;
     //当用户在线(带token访问网站)时，每隔xx秒刷新当前token
-    public static final int TOKEN_REFRESH_INTERVAL = 300;
+    public static int tokenRefreshInterval;
 
-    //非静态的set方法才能从获取yml中的值
+    //token过期时间
+    public static Duration tokenExpireIn;
+    //token密钥
+    public static String tokenSecretKey;
+
+    //通过非静态的set方法注入
     public void setPageSize(int pageSize) {
         Constants.pageSize = pageSize;
     }
 
-    public void setIndexBlogContentTextSize(int textSize) {
-        Constants.indexBlogContentTextSize = textSize;
+    public void setIndexBlogContentTextSize(int indexBlogContentTextSize) {
+        Constants.indexBlogContentTextSize = indexBlogContentTextSize;
     }
 
-    public void setTokenInHeader(String str) {
-        Constants.tokenInHeader = str;
+    public void setTokenInHeader(String tokenInHeader) {
+        Constants.tokenInHeader = tokenInHeader;
+    }
+
+    public void setTokenExpireIn(Duration tokenExpireIn) {
+        Constants.tokenExpireIn = tokenExpireIn;
+    }
+
+    public void setTokenSecretKey(String tokenSecretKey) {
+        Constants.tokenSecretKey = tokenSecretKey;
+    }
+
+    public void setTokenPrefix(String tokenPrefix) {
+        Constants.tokenPrefix = tokenPrefix;
+    }
+
+    public void setTokenPayloadUsername(String tokenPayloadUsername) {
+        Constants.tokenPayloadUsername = tokenPayloadUsername;
+    }
+
+    public void setTokenPayloadRoles(String tokenPayloadRoles) {
+        Constants.tokenPayloadRoles = tokenPayloadRoles;
     }
 }

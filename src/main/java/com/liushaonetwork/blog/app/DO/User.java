@@ -1,8 +1,10 @@
 package com.liushaonetwork.blog.app.DO;
 
 import javax.annotation.Generated;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = 2704712962955929820L;
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-20T13:47:14.8892981+08:00", comments = "Source field: user.id")
     private Long id;
 

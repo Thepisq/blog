@@ -20,9 +20,6 @@ import java.util.List;
 public interface UserTrans {
     UserTrans INSTANCE = Mappers.getMapper(UserTrans.class);
 
-    /**
-     * 两个类变量名一致不用额外写映射
-     */
     User dto2Do(UserDTO userDTO);
 
     UserDTO do2Dto(User user);

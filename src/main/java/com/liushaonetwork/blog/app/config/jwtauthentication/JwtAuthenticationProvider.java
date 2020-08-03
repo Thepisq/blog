@@ -12,30 +12,24 @@ import org.springframework.security.web.authentication.www.NonceExpiredException
 
 import java.util.Calendar;
 
-import static com.liushaonetwork.blog.app.utils.Constants.TOKEN_PAYLOAD_USERNAME;
+import static com.liushaonetwork.blog.app.utils.Constants.tokenPayloadUsername;
 
 /**
  * JwtAuthenticationProvider:
  * 根据JWT验证用户，作用如同DaoAuthenticationProvider之于UsernamepasswordAuthentication
  */
 public class JwtAuthenticationProvider implements AuthenticationProvider {
-    private final MyUserDetailsService userUdService;
-    private final JwtUtil jwtUtil;
-
     @Autowired
-    public JwtAuthenticationProvider(MyUserDetailsService userUdService, JwtUtil jwtUtil) {
-        this.userUdService = userUdService;
-        this.jwtUtil = jwtUtil;
-    }
+    private MyUserDetailsService userUdService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String token = ((JwtAuthenticationToken) authentication).getToken();
-        Claims claims = jwtUtil.getClaims(token);
+        Claims claims = JwtUtil.getClaims(token);
         if (claims.getExpiration().before(Calendar.getInstance().getTime())) {
             throw new NonceExpiredException("Token 过期");
         }
-        String username = (String) claims.get(TOKEN_PAYLOAD_USERNAME);
+        String username = (String) claims.get(tokenPayloadUsername);
         MyUserDetails user = (MyUserDetails) userUdService.loadUserByUsername(username);
         if (user == null) {
             throw new NonceExpiredException("Token 过期");

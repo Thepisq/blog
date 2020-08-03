@@ -5,6 +5,7 @@ import com.liushaonetwork.blog.app.utils.validatecode.ValidateCode;
 import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -32,13 +33,10 @@ import static com.liushaonetwork.blog.app.utils.validatecode.imagecode.ImageCode
 @Slf4j
 @Component
 public class ValidateCodeFilter extends OncePerRequestFilter {
-    private final AuthenticationFailureHandler authenticationFailureHandler;
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
     private static final String VALIDATE_CODE_PARAMETER = "validateCode";
     private static final String PATH_LOGIN = "/login";
-
-    public ValidateCodeFilter(AuthenticationFailureHandler authenticationFailureHandler) {
-        this.authenticationFailureHandler = authenticationFailureHandler;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {

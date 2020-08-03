@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class UserDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -2461783957512246583L;
 
     private Long id;
 

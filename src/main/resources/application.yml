@@ -1,12 +1,16 @@
 blog:
-  jwt:
-    # 单位毫秒
-    expire-in: 86400000
-    secret-key: asuqwe124jvst29yr5gslnvui3
   constants:
     page-size: 20
     index-blog-content-text-size: 40
     token-in-header: Authorization
+    token-prefix: Bearer
+    token-payload-username: username
+    token-payload-roles: roles
+    # 单位秒
+    token-refresh-interval: 300
+    # 单位毫秒
+    token-expire-in: 86400000
+    token-secret-key: asuqwe124jvst29yr5gslnvui3
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/blog?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=GMT%2B8
@@ -42,6 +46,6 @@ logging:
   file:
     name: /logs/my.log
   level:
-    root: debug
+    root: info
 server:
   port: 8080
