@@ -44,7 +44,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private AuthenticationFailureHandler failureHandler = new SimpleUrlAuthenticationFailureHandler();
     private List<RequestMatcher> permissiveRequestMatchers;
     private final RequestMatcher reqMatcher;
-    ;
 
     public JwtAuthenticationFilter() {
         this.reqMatcher = new RequestHeaderRequestMatcher("Authorization");
@@ -59,9 +58,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        log.info("经过了JwtAuthenticationFilter");
-        log.info("检查jwt: " + request.getHeader(tokenInHeader));
-        if (!reqMatcher.matches(request)) {
+        log.info("JwtAuthenticationFilter -> 获取token");
+        log.info("获取token: {" + tokenInHeader + ": " + request.getHeader(tokenInHeader) + "}");
+        if (!reqMatcher.matches(request) || StringUtils.startsWith(request.getHeader(tokenInHeader), tokenPrefix)) {
             filterChain.doFilter(request, response);
             return;
         }

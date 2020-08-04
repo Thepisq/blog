@@ -3,7 +3,7 @@ package com.liushaonetwork.blog.app.controller.front;
 import com.liushaonetwork.blog.app.DO.MyUserDetails;
 import com.liushaonetwork.blog.app.DTO.BlogDTO;
 import com.liushaonetwork.blog.app.service.BlogService;
-import com.liushaonetwork.blog.app.utils.IdWorker;
+import com.liushaonetwork.blog.app.service.SysTopicService;
 import com.liushaonetwork.blog.app.utils.ResultUtil;
 import com.liushaonetwork.blog.app.utils.mapstruct.BlogTrans;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,28 +23,34 @@ import static com.liushaonetwork.blog.app.utils.Constants.pageSize;
 @RestController
 public class BlogController {
     private final BlogService blogService;
-    private final IdWorker idWorker = new IdWorker();
-    private final String ROLE_BLOG = "ROLE_BLOG";
+    private final SysTopicService topicService;
 
     @Autowired
-    public BlogController(BlogService blogService) {
+    public BlogController(BlogService blogService, SysTopicService topicService) {
         this.blogService = blogService;
+        this.topicService = topicService;
     }
 
-    @GetMapping("/b/{id}")
+    @GetMapping("/blog/{id}")
     public ResponseEntity<?> getBlog(@PathVariable Long id) {
         BlogDTO blogDTO = blogService.oneBlog(id);
+        String topicName = topicService.getById(blogDTO.getTopicId()).getTopicName();
+        blogDTO.setTopicName(topicName);
         return ResponseEntity.ok(BlogTrans.INSTANCE.dto2FtVo(blogDTO));
     }
 
     @GetMapping("/blog/p={pageNum}")
     public ResponseEntity<?> getBlogs(@PathVariable int pageNum) {
         List<BlogDTO> blogs = blogService.findAll(pageNum, pageSize);
+        for (BlogDTO blog : blogs) {
+            String topicName = topicService.getById(blog.getTopicId()).getTopicName();
+            blog.setTopicName(topicName);
+        }
         return ResponseEntity.ok(BlogTrans.INSTANCE.listDto2Vo(blogs));
     }
 
     @PostMapping("/blog/add")
-    public ResponseEntity<?> addBlog(@RequestParam String title, @RequestParam String content, @RequestParam Integer topicId) {
+    public ResponseEntity<?> addBlog(@RequestParam String title, @RequestParam String content, @RequestParam(defaultValue = "1") Integer topicId) {
         Map<String, Object> result;
         if (blogService.saveBlog(title, content, topicId) == 1) {
             result = ResultUtil.success();

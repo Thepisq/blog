@@ -1,14 +1,14 @@
-package com.liushaonetwork.blog.app.config.validatecodeauthentication;
+package com.liushaonetwork.blog.app.config.other;
 
 import com.liushaonetwork.blog.app.exception.ValidateCodeException;
 import com.liushaonetwork.blog.app.utils.validatecode.ValidateCode;
 import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -33,14 +33,13 @@ import static com.liushaonetwork.blog.app.utils.validatecode.imagecode.ImageCode
 @Slf4j
 @Component
 public class ValidateCodeFilter extends OncePerRequestFilter {
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
+    private AuthenticationFailureHandler authenticationFailureHandler = new SimpleUrlAuthenticationFailureHandler();
     private static final String VALIDATE_CODE_PARAMETER = "validateCode";
     private static final String PATH_LOGIN = "/login";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
-        log.info("经过了ValidateCodeFilter");
+        log.info("ValidateCodeFilter -> 验证码过滤器");
         if (StringUtils.equals(PATH_LOGIN, request.getRequestURI()) && StringUtils.equalsIgnoreCase(request.getMethod(), HttpMethod.POST.name())) {
             log.info("request : {}", request.getRequestURI());
             try {
@@ -77,4 +76,5 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         }
         request.getSession().removeAttribute(SESSION_KEY);
     }
+
 }

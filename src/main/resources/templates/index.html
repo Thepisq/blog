@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>主页</title>
-    <script th:src="@{js/jquery-3.5.1.min.js}"></script>
-    <script th:src="@{bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js}"></script>
-    <link rel="stylesheet" th:href="@{bootstrap-4.4.1-dist/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{css/common.css}">
+    <script th:src="@{../js/jquery-3.5.1.min.js}"></script>
+    <script th:src="@{../bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{../bootstrap-4.4.1-dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{../css/common.css}">
 </head>
 <body>
 <div th:include="navigate::navbar"></div>
@@ -33,6 +33,8 @@
                     <span th:text="${blog.authorName}"></span>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <span th:text="${blog.lastPushDate}"></span>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="text-primary" th:text="${blog.topicName}"></span>
                 </div>
                 <div class="card-title">
                     <a class="text-decoration-none" th:href="@{'/b/'+${blog.id}}" th:text="${blog.title}"></a>

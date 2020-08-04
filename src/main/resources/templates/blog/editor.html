@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <!--    <meta name="_csrf" th:content="${_csrf.token}"/>-->
+    <!--    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>-->
     <title>写Blog</title>
     <script type="text/javascript" th:src="@{js/jquery-3.5.1.min.js}"></script>
     <script th:src="@{bootstrap-4.4.1-dist/js/bootstrap.bundle.min.js}"></script>
@@ -14,9 +14,27 @@
     <link rel="stylesheet" th:href="@{bootstrap-4.4.1-dist/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{css/common.css}">
     <style>
+        #editor_content {
+            padding: 10px 0px 0px;
+        }
+
+        #submit_blog_btn {
+            padding: 10px 5px 10px;
+            width: 190px;
+            height: 42px;
+            margin: 0 auto;
+        }
+
+        #blog_tag_added_show {
+            font-size: 14px;
+            margin-right: 5px;
+            border-radius: 15px;
+        }
+
         .editor-form {
             padding: 10px 5px 10px 5px;
             max-width: 800px;
+            min-width: 600px;
         }
 
         .quill-container {
@@ -36,41 +54,80 @@
     </style>
 </head>
 <body>
+<div th:include="navigate::navbar"></div>
 <div class="container">
-
-    <div th:include="navigate::navbar"></div>
     <div id="editor_content" class="container col-10">
         <form id="editor_form" class="editor-form" method="post">
             <div class="form-group row">
-                <label for="blog_title" class="col-sm-2 col-form-label">标题</label>
-                <div class="col-sm-10">
+                <label for="blog_title" class="col-2 col-form-label text-center">标题</label>
+                <div class="col-10">
                     <input id="blog_title" class="form-control" type="text" name="title" placeholder="标题">
                 </div>
             </div>
             <div class="form-group row">
-                <label for="blog_tag" class="col-sm-2 col-form-label">tag</label>
-                <div class="col-sm-10">
-                    <input id="blog_tag" class="form-control" type="text" name="topicId" placeholder="tag">
+                <label for="blog_tag" class="col-2 col-form-label text-center align-self-center">话题</label>
+                <div class="col-10">
+                    <button id="blog_tag_modal_show" type="button" class="btn btn-sm btn-outline-warning my-2"
+                            data-toggle="modal" data-target="#modal_Add_Tag">
+                        添加话题
+                        <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M8 3.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5H4a.5.5 0 0 1 0-1h3.5V4a.5.5 0 0 1 .5-.5z"/>
+                            <path fill-rule="evenodd"
+                                  d="M7.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0V8z"/>
+                        </svg>
+                    </button>
+                    <input id="blog_tag" class="form-control" type="text" name="topicId" placeholder="tag" hidden>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label">内容</label>
-                <div class="quill-container col-sm-10">
+                <label class="col-2 col-form-label text-center">内容</label>
+                <div class="quill-container col-10">
                     <div id="editor" class="quill-editor">
                         <!--编辑区域-->
                     </div>
                 </div>
             </div>
-            <div class="form-group row">
-                <div id="submit_result">
-                    <!--登录后返回的结果-->
+            <div class="form-group">
+                <div id="submit_result" class="row justify-content-center">
+                    <!--提交后返回的结果-->
                 </div>
-                <button id="submit_blog_btn" type="button" class="btn btn-lg btn-primary btn-block">发布文章</button>
+            </div>
+            <div class="form-group">
+                <div class="row justify-content-center">
+                    <button id="submit_blog_btn" type="button" class="btn btn-warning text-dark">发布文章</button>
+                </div>
             </div>
         </form>
         <script type="text/javascript" th:src="@{../js/editor.js}"></script>
     </div>
     <div th:include="navigate::info"></div>
+
+    <div id="modal_Add_Tag" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p>选择一个您想要添加的话题</p>
+                </div>
+                <div class="modal-body">
+                    <div id="blog_tag_modal_content" class="container-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <span class="backspace-div">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-backspace" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd"
+                  d="M6.603 2h7.08a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-7.08a1 1 0 0 1-.76-.35L1 8l4.844-5.65A1 1 0 0 1 6.603 2zm7.08-1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08z"/>
+            <path fill-rule="evenodd"
+                  d="M5.83 5.146a.5.5 0 0 0 0 .708l5 5a.5.5 0 0 0 .707-.708l-5-5a.5.5 0 0 0-.708 0z"/>
+            <path fill-rule="evenodd"
+                  d="M11.537 5.146a.5.5 0 0 1 0 .708l-5 5a.5.5 0 0 1-.708-.708l5-5a.5.5 0 0 1 .707 0z"/>
+        </svg>
+    </span>
 </div>
 <div th:include="navigate::advertisement"></div>
 </body>

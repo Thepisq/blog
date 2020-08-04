@@ -25,10 +25,11 @@ var quillEditor = new Quill('#editor', {
     placeholder: "愉快地写下内容吧",
     theme: 'snow'
 })
-//获取CSRF token,防止ajax请求被视为跨域请求
-const header = $("meta[name='_csrf_header']").attr("content")
-const token = $("meta[name='_csrf']").attr("content")
+// //获取CSRF token,防止ajax请求被视为跨域请求
+// const header = $("meta[name='_csrf_header']").attr("content")
+// const token = $("meta[name='_csrf']").attr("content")
 $(document).ready(function () {
+    $(".backspace-div").hide()
     $("#submit_blog_btn").click(function () {
         if (quillEditor.getLength() === 1) {
             return false
@@ -43,7 +44,7 @@ $(document).ready(function () {
             url: '/blog/add',
             data: blogData,
             beforeSend: function (xhr) {
-                xhr.setRequestHeader(header, token)
+                // xhr.setRequestHeader(header, token)
             },
             success: function (data) {
                 $("#submit_blog_btn").prop("disabled", true)
@@ -66,4 +67,64 @@ $(document).ready(function () {
         })
         return false
     })
+    $("#blog_tag_modal_show").one('click', function () {
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: '/topic/getHotTopic',
+            data: {
+                "page": 1
+            },
+            beforeSend: function (xhr) {
+                // xhr.setRequestHeader(header, token)
+            },
+            success: function (data) {
+                if (data != null) {
+                    addTagRow(eval(data))
+                }
+            },
+            error: function () {
+                alert("发生奇怪的事情了呢\n请重试或是查看控制台日志")
+                console.log(data)
+            }
+        })
+    })
+    $(document).on('click', ".tp-btn", function () {
+        addTagSpan($(this))
+    })
+    $(document).on("click", ".backspace-div", function () {
+        if (!$(this).hasClass('hidden')) {
+            $("#blog_tag").val(null)
+            $(".tag-span").remove()
+            $(this).remove()
+        }
+    })
 })
+
+//添加表单tag内容
+function addTagSpan(thisDom) {
+    var tpDiv = thisDom.prev("span")
+    var tag_span = "<span class=\"tag-span\">\n" + "</span>"
+    var backspace = $(".backspace-div").clone().show()
+
+    $("#blog_tag_modal_show").parent().prepend(tag_span)
+    $("#blog_tag_modal_show").prev().after(backspace)
+
+    $(".tag-span").html(tpDiv.html().split("-")[1])
+    $("#blog_tag").val(tpDiv.attr("tp"))
+    $("#modal_Add_Tag").modal('hide')
+}
+
+//添加模态框tag列表
+function addTagRow(data) {
+    var htmlStr = ""
+    $.each(data, function (index, topic) {
+        htmlStr += "<div class=\"row\">\n" +
+            "<span tp=\"" + topic.id + "\" class=\"col-10 align-self-center\">" + topic.branch + "-" + topic.topicName + "</span>\n" +
+            "<button class=\"btn btn-sm my-2 btn-outline-warning col-2 tp-btn\">添加</button> \n" +
+            "</div>"
+    })
+    $("#blog_tag_modal_content").html(htmlStr)
+}
+
+

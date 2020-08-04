@@ -1,5 +1,6 @@
 package com.liushaonetwork.blog.app.config.jwtauthentication;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.HttpSecurityBuilder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -12,6 +13,7 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
  * JwtAuthenticationConfigurer:
  * 整合JwtAuthentication
  */
+@Slf4j
 public class JwtAuthenticationConfigurer<T extends JwtAuthenticationConfigurer<T, B>, B extends HttpSecurityBuilder<B>> extends AbstractHttpConfigurer<T, B> {
     private JwtAuthenticationFilter authFilter;
 
@@ -21,6 +23,7 @@ public class JwtAuthenticationConfigurer<T extends JwtAuthenticationConfigurer<T
 
     @Override
     public void configure(B http) throws Exception {
+        log.info("经过了JwtAuthenticationConfigurer");
         //在WebSecurityConfig.java用@Bean注入，下一行设置的Manager不会为null
         authFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         JwtAuthenticationFilter filter = postProcess(authFilter);

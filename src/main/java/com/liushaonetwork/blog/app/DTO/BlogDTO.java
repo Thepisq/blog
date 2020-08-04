@@ -10,14 +10,12 @@ import java.time.LocalDateTime;
 /**
  * @author 13496
  * 包含部分用户字段的Blog对象
- * 'authorName'为'authorId'在User表(的'id')所对应的'username'
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class BlogDTO implements Serializable {
-
-    private static final long serialVersionUID = -5112450476858187506L;
+    private static final long serialVersionUID = 5038008672206053453L;
 
     private Long id;
 
@@ -40,6 +38,8 @@ public class BlogDTO implements Serializable {
     private LocalDateTime lastPushDate;
 
     private Integer topicId;
+
+    private String topicName;
 
     private String content;
 

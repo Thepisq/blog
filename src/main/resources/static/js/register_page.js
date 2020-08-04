@@ -4,9 +4,9 @@ const _CANCEL = -1 /*取消 */
 const _MIN_USERNAME_LENGTH = 6 /*最低用户名长度 */
 const _MIN_PASSWORD_LENGTH = 8 /*最低密码长度 */
 
-//获取CSRF token,防止ajax请求被视为跨域请求
-var header = $("meta[name='_csrf_header']").attr("content")
-var token = $("meta[name='_csrf']").attr("content")
+// //获取CSRF token,防止ajax请求被视为跨域请求
+// var header = $("meta[name='_csrf_header']").attr("content")
+// var token = $("meta[name='_csrf']").attr("content")
 
 var input_username = $("#username")
 var valid_username = $("#valid_username")
@@ -33,7 +33,7 @@ function checkForExists() {
             dataType: 'json',
             data: 'username=' + input_username.val().trim(),
             beforeSend: function (xhr) {
-                xhr.setRequestHeader(header, token)
+                // xhr.setRequestHeader(header, token)
             },
             success: function (data) {
                 //数据库查不到数据返回 0 ，否则返回1

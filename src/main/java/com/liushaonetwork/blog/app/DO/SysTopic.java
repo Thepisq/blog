@@ -5,11 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.annotation.Generated;
+import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class SysTopic {
+public class SysTopic implements Serializable {
+    private static final long serialVersionUID = -4979685268641213008L;
     @Generated(value = "org.mybatis.generator.api.MyBatisGenerator", date = "2020-07-18T16:32:06.5366023+08:00", comments = "Source field: sys_topic.id")
     private Integer id;
 

@@ -39,9 +39,9 @@ public class JwtUtil {
         userInfo.put(tokenPayloadUsername, user.getUsername());
         userInfo.put(tokenPayloadRoles, user.getAuthorities());
         return Jwts.builder()
+                .setClaims(userInfo) //自定义字段要在默认字段前设置
                 .setIssuer("blog")
                 .setIssuedAt(new Date())
-                .setClaims(userInfo)
                 .setExpiration(expireDate)
                 .signWith(key)
                 .compact();

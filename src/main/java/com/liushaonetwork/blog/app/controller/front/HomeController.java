@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,13 @@ public class HomeController {
         ResponseEntity<?> blogs = blogController.getBlogs(1);
         model.addAttribute("blogs", blogs.getBody());
         return "index";
+    }
+
+    @GetMapping("/b/{id}")
+    public String show(Model model, @PathVariable long id) {
+        ResponseEntity<?> blog = blogController.getBlog(id);
+        model.addAttribute("blog", blog.getBody());
+        return "blog/show";
     }
 
     @GetMapping("/login")

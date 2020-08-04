@@ -15,17 +15,32 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class BlogFrontVO implements Serializable {
     static final long serialVersionUID = 1L;
+
     private Long id;
+
     private Long authorId;
+
     private String authorName;
+
     private String title;
+
     private Integer likes;
+
     private Integer clicks;
+
     private Integer collects;
+
     private Integer comments;
+
     private String firstPushDate;
+
     private String lastPushDate;
+
     private Integer topicId;
+
+    private String topicName;
+
     private String content;
+
     private String contentView;
 }

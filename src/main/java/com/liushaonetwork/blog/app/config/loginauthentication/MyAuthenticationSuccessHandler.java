@@ -35,11 +35,9 @@ public class MyAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucce
         log.info("经过了MyAuthenticationSuccessHandler -> 登录认证成功");
         String token = JwtUtil.signToken((MyUserDetails) authentication.getPrincipal());
         System.out.println("生成的token: {\n" + token + "\n}");
-        response.setContentType("application/json;charset=UTF-8");
-        response.addHeader(tokenInHeader, tokenPrefix + " " + token);
+        response.setHeader(tokenInHeader, tokenPrefix + " " + token);
         //设定返回的Json数据
         Map<String, Object> result = ResultUtil.success();
         response.getWriter().write(objectMapper.writeValueAsString(result));
-        //使用HttpServletResponse.getWriter()方法,容器会在request处理结束后帮你回收相关资源
     }
 }

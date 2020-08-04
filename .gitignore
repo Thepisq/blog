@@ -33,4 +33,3 @@ build/
 .vscode/
 
 /src/main/resources/logs/
-/src/test/java/com/liushaonetwork/littlefighter/

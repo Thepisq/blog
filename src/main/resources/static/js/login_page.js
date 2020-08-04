@@ -1,6 +1,6 @@
-//获取CSRF token,防止ajax请求被视为跨域请求
-let header = $("meta[name='_csrf_header']").attr("content");
-let token = $("meta[name='_csrf']").attr("content");
+// //获取CSRF token,防止ajax请求被视为跨域请求
+// let header = $("meta[name='_csrf_header']").attr("content");
+// let token = $("meta[name='_csrf']").attr("content");
 
 let subBtn = $("#submitBtn");
 let loginInfo = $("#login_info");
@@ -25,7 +25,7 @@ function login() {
             "validateCode": $("#validateCode").val()
         },
         beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token)
+            // xhr.setRequestHeader(header, token)
         },
         success: function (data) {
             if (data.status != null) {

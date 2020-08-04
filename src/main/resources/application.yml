@@ -1,4 +1,5 @@
 blog:
+  #配置静态变量
   constants:
     page-size: 20
     index-blog-content-text-size: 40
@@ -46,6 +47,6 @@ logging:
   file:
     name: /logs/my.log
   level:
-    root: info
+    root: debug
 server:
   port: 8080

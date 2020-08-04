@@ -48,6 +48,7 @@ public interface BlogTrans {
             blogFrontVO.setLastPushDate(TimeConvertUtil.getDurationBetweenNow(blogDTO.getLastPushDate()));
         }
         blogFrontVO.setTopicId(blogDTO.getTopicId());
+        blogFrontVO.setTopicName(blogDTO.getTopicName());
         blogFrontVO.setContent(blogDTO.getContent());
         blogFrontVO.setContentView(blogDTO.getContentView());
 
