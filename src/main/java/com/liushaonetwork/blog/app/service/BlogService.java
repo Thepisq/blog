@@ -32,4 +32,6 @@ public interface BlogService {
      * update one blog
      */
     int updateBlog(BlogDTO blogDTO);
+
+    int clickLikes(Long id);
 }

@@ -111,7 +111,7 @@ function register() {
             "validateCode": $("#validateCode").val().trim()
         },
         beforeSend: function (xhr) {
-            xhr.setRequestHeader(header, token);
+            //xhr.setRequestHeader(header, token);
             subBtn.toggleClass("progress-bar progress-bar-striped progress-bar-animated")
         },
         success: function (data) {

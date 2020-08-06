@@ -111,4 +111,9 @@ public class BlogServiceImpl implements BlogService {
         blogDTO.setLastPushDate(LocalDateTime.now());
         return blogMapper.updateByPrimaryKeySelective(BlogTrans.INSTANCE.dto2Do(blogDTO));
     }
+
+    @Override
+    public int clickLikes(Long id) {
+        return 0;
+    }
 }

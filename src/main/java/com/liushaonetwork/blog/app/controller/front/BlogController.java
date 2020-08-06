@@ -81,4 +81,9 @@ public class BlogController {
 
         return ResponseEntity.ok(result);
     }
+
+    @PostMapping("/b/{id}/like={bool}")
+    public ResponseEntity<?> addLikes(@PathVariable Long id, @PathVariable boolean bool) {
+        return null;
+    }
 }

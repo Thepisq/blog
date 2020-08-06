@@ -5,6 +5,7 @@ import com.liushaonetwork.blog.app.DO.SysTopic;
 import com.liushaonetwork.blog.app.mapper.SysTopicMapper;
 import com.liushaonetwork.blog.app.service.SysTopicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.List;
 @Service
 public class SysTopicServiceImpl implements SysTopicService {
     private final SysTopicMapper sysTopicMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Autowired
     public SysTopicServiceImpl(SysTopicMapper topicMapper) {
@@ -30,8 +33,12 @@ public class SysTopicServiceImpl implements SysTopicService {
 
     @Override
     public List<SysTopic> getSysTopics(int page) {
-        PageHelper.startPage(page, 10);
-        return sysTopicMapper.select(c -> c);
+        List<SysTopic> topicList = null;
+        if (topicList == null) {
+            PageHelper.startPage(page, 10);
+            topicList = sysTopicMapper.select(c -> c);
+        }
+        return topicList;
     }
 
     @Override
