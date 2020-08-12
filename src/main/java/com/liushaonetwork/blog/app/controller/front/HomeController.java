@@ -1,5 +1,6 @@
 package com.liushaonetwork.blog.app.controller.front;
 
+import com.liushaonetwork.blog.app.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 /**
  * @author Administrator
@@ -31,6 +33,8 @@ import java.util.Enumeration;
 public class HomeController {
     @Autowired
     BlogController blogController;
+    @Autowired
+    FollowController followController;
 
     @GetMapping(value = {"/", "/index"})
     @PreAuthorize("hasAnyAuthority()")
@@ -41,10 +45,22 @@ public class HomeController {
     }
 
     @GetMapping("/b/{id}")
-    public String show(Model model, @PathVariable long id) {
-        ResponseEntity<?> blog = blogController.getBlog(id);
+    public String show(HttpServletRequest request, Model model, @PathVariable long id) {
+        ResponseEntity<?> blog = blogController.getBlog(id, request);
         model.addAttribute("blog", blog.getBody());
         return "blog/show";
+    }
+
+    @GetMapping("/user/follow_show")
+    public String myfollowing(Model model) {
+        ResponseEntity<?> followings = followController.getMyAllFollow();
+        model.addAttribute("followings", followings.getBody());
+        if (((HashMap) followings.getBody()).containsKey("msg")) {
+            model.addAttribute("emptyList", true);
+        } else {
+            model.addAttribute("emptyList", false);
+        }
+        return "follow/follow_show";
     }
 
     @GetMapping("/login")
@@ -105,4 +121,8 @@ public class HomeController {
         response.getWriter().write(headers.toString());
     }
 
+    @GetMapping("/ip")
+    public ResponseEntity<?> getIPAddr(HttpServletRequest request) {
+        return ResponseEntity.ok(HttpUtil.getIPAddr(request));
+    }
 }

@@ -8,9 +8,11 @@ import com.liushaonetwork.blog.app.utils.ResultUtil;
 import com.liushaonetwork.blog.app.utils.mapstruct.BlogTrans;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ import static com.liushaonetwork.blog.app.utils.Constants.pageSize;
  * /blog/**
  * blog操作类
  */
+@EnableAsync
 @RestController
 public class BlogController {
     private final BlogService blogService;
@@ -32,10 +35,13 @@ public class BlogController {
     }
 
     @GetMapping("/blog/{id}")
-    public ResponseEntity<?> getBlog(@PathVariable Long id) {
+    public ResponseEntity<?> getBlog(@PathVariable Long id, HttpServletRequest request) {
         BlogDTO blogDTO = blogService.oneBlog(id);
         String topicName = topicService.getById(blogDTO.getTopicId()).getTopicName();
         blogDTO.setTopicName(topicName);
+        //增加点击量
+        blogService.blogClicks(id, request);
+
         return ResponseEntity.ok(BlogTrans.INSTANCE.dto2FtVo(blogDTO));
     }
 
@@ -82,8 +88,13 @@ public class BlogController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/b/{id}/like={bool}")
-    public ResponseEntity<?> addLikes(@PathVariable Long id, @PathVariable boolean bool) {
-        return null;
+    /**
+     * 点赞行为
+     */
+    @PostMapping("/blog/{id}/likes")
+    public ResponseEntity<?> addLikes(@PathVariable Long id) {
+        MyUserDetails user = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        blogService.blogLikes(id, user.getId());
+        return ResponseEntity.ok(ResultUtil.success());
     }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org"
->
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -15,6 +15,18 @@
         .blog-content {
             padding: 10px 0 10px;
         }
+
+        .blog-likes {
+            margin: 0px 16.666667% 0px;
+        }
+
+        .blog-likes:hover {
+            cursor: pointer;
+        }
+
+        .blog-likes svg {
+            font-size: 24px;
+        }
     </style>
 </head>
 
@@ -26,15 +38,17 @@
             <div class="card-body">
                 <!--标题及作者信息等-->
                 <div class="card-header bg-light text-center">
+                    <span class="blog-id d-none" th:text="${blog.id}"></span>
                     <h2 class="card-title" th:text="${blog.title}"></h2>
-                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor"
-                         xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                              d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                    </svg>
-                    <span th:text="${blog.authorName}"></span>
-                    <br>
-                    <div style="font-size: 12px;">
+                    <div class="">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M13 14s1 0 1-1-1-4-6-4-6 3-6 4 1 1 1 1h10zm-9.995-.944v-.002.002zM3.022 13h9.956a.274.274 0 0 0 .014-.002l.008-.002c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664a1.05 1.05 0 0 0 .022.004zm9.974.056v-.002.002zM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                        </svg>
+                        <span class="" th:text="${blog.authorName}"></span>
+                    </div>
+                    <div class="" style="font-size: 12px;">
                         发布时间&nbsp;&nbsp;<span th:text="${blog.firstPushDate}"></span>
                         &nbsp;&nbsp;|&nbsp;&nbsp;
                         最后编辑&nbsp;&nbsp;<span th:text="${blog.lastPushDate}"></span>
@@ -42,16 +56,30 @@
                 </div>
                 <!--文章内容-->
                 <div class="blog-content card-text" th:utext="${blog.content}"></div>
-                <div class="blog-bottom">
-                    <div class="blog-likes">
-                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+                <div class="blog-bottom row">
+                    <div class="blog-likes col-4 m-auto text-center" role="button"
+                         th:switch="${blog.isCurrentUserLikes}">
+                        <svg th:case="true" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart text-danger"
+                             fill="currentColor"
                              xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
                                   d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
                         </svg>
-                        <div class="blog-likes-number" th:text="${blog.likes}"></div>
+                        <svg th:case="false" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart"
+                             fill="currentColor"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                        </svg>
                     </div>
-                    <div class="blog-tag text-primary my-2" th:text="${blog.topicName}"></div>
+                    <div class="col-4 m-auto text-center">
+                        <span>分区: </span>
+                        <span class="blog-tag text-primary my-2" th:text="${blog.topicName}"></span>
+                    </div>
+                    <div class="col-4 m-auto text-center">
+                        <span>浏览: </span>
+                        <span class="my-2" th:text="${blog.clicks}"></span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,5 +88,7 @@
     <div th:include="navigate::info"></div>
 </div>
 <div th:include="navigate::advertisement"></div>
+<input sec:authorize="hasRole('ROLE_USER')" class="user-login" value="true" hidden/>
+<script th:src="@{../js/blog/show.js}"></script>
 </body>
 </html>

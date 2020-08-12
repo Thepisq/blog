@@ -23,11 +23,12 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @RequestMapping("/error")
     public ResponseEntity<?> exception(HttpServletRequest request, HttpServletResponse response) {
-        String msg = "。";
+        String msg = "...";
         if (NO_AUTHORIZE_ERROR_MESSAGE.equals(request.getAttribute("javax.servlet.error.message"))) {
             msg = "<a href='/user/upgrade'>充值权限</a>";
         }
-        return ResponseEntity.status(response.getStatus()).body("error: \n" + request.getAttribute("javax.servlet.error.message") + "\n" + msg);
+        return ResponseEntity.status(response.getStatus()).body(
+                response.getStatus() + "error: \n" + request.getAttribute("javax.servlet.error.message") + "\n" + msg);
     }
 
     @Override

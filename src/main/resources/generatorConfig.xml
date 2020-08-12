@@ -17,7 +17,8 @@
         <javaClientGenerator targetPackage="com.liushaonetwork.blog.app.mapper" targetProject="src/main/java"/>
 
 
-        <table tableName="blog"/>
+        <table tableName="follow"/>
+        <!--        <table tableName="blog"/>-->
         <!--        <table tableName="sys_role"/>-->
         <!--        <table tableName="sys_topic"/>-->
         <!--        <table tableName="user"/>-->

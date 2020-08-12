@@ -3,6 +3,7 @@ package com.liushaonetwork.blog.app.service;
 import com.liushaonetwork.blog.app.DO.Blog;
 import com.liushaonetwork.blog.app.DTO.BlogDTO;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -33,5 +34,8 @@ public interface BlogService {
      */
     int updateBlog(BlogDTO blogDTO);
 
-    int clickLikes(Long id);
+    int blogLikes(Long id, Long userId);
+
+    void blogClicks(Long id, HttpServletRequest request);
+
 }

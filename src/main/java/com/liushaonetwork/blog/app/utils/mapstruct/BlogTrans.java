@@ -38,6 +38,7 @@ public interface BlogTrans {
         blogFrontVO.setAuthorName(blogDTO.getAuthorName());
         blogFrontVO.setTitle(blogDTO.getTitle());
         blogFrontVO.setLikes(blogDTO.getLikes());
+        blogFrontVO.setIsCurrentUserLikes(blogDTO.getIsCurrentUserLikes());
         blogFrontVO.setClicks(blogDTO.getClicks());
         blogFrontVO.setCollects(blogDTO.getCollects());
         blogFrontVO.setComments(blogDTO.getComments());

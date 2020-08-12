@@ -27,6 +27,8 @@ public class BlogDTO implements Serializable {
 
     private Integer likes;
 
+    private Boolean isCurrentUserLikes;
+
     private Integer clicks;
 
     private Integer collects;

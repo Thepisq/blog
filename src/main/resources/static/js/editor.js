@@ -30,6 +30,12 @@ var quillEditor = new Quill('#editor', {
 // const token = $("meta[name='_csrf']").attr("content")
 $(document).ready(function () {
     $(".backspace-div").hide()
+    $("#blog_title").bind('input propertychange', function () {
+        var title = $("#blog_title").val()
+        if (title.length >= 30) {
+            $("#blog_title").val(title.substring(0, 30))
+        }
+    })
     $("#submit_blog_btn").click(function () {
         if (quillEditor.getLength() === 1) {
             return false

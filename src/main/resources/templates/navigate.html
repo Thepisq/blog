@@ -29,6 +29,18 @@
                             <a sec:authorize="hasRole('ROLE_USER')" class="dropdown-item" href="/editor">写Blog</a>
                         </div>
                     </li>
+                    <li sec:authorize="hasRole('ROLE_USER')" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle " href="#" data-toggle="dropdown">
+                            我的
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="/user">用户页面</a>
+                            <a class="dropdown-item" href="/editor">写Blog</a>
+                            <a class="dropdown-item" href="/user/follow_show">关注列表</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/logout">退出登录</a>
+                        </div>
+                    </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="搜索">
@@ -90,10 +102,12 @@
     </script>
 </div>
 <div th:fragment="info">
-    <p>你的当前用户名是：</p>
-    <p sec:authentication="name"></p>
-    <p>你的权限是：</p>
-    <p sec:authentication="authorities"></p>
+    <div class="p-2 m-auto">
+        <p>你的当前用户名是：</p>
+        <p sec:authentication="name"></p>
+        <p>你的权限是：</p>
+        <p sec:authentication="authorities"></p>
+    </div>
 </div>
 </body>
 </html>
