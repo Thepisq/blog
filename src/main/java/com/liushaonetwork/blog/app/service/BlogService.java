@@ -2,6 +2,7 @@ package com.liushaonetwork.blog.app.service;
 
 import com.liushaonetwork.blog.app.DO.Blog;
 import com.liushaonetwork.blog.app.DTO.BlogDTO;
+import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -36,6 +37,6 @@ public interface BlogService {
 
     int blogLikes(Long id, Long userId);
 
-    void blogClicks(Long id, HttpServletRequest request);
+    void blogClicks(Long id, HttpServletRequest request, Authentication auth);
 
 }

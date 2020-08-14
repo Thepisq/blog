@@ -35,10 +35,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         String username = (String) claims.get(tokenPayloadUsername);
         MyUserDetails user = (MyUserDetails) userUdService.loadUserByUsername(username);
         if (user == null) {
-            throw new NonceExpiredException("Token 过期");
+            throw new NonceExpiredException("Token 信息错误");
         }
-        JwtAuthenticationToken authToken = new JwtAuthenticationToken(user, token, user.getAuthorities());
-        return authToken;
+        return new JwtAuthenticationToken(user, token, user.getAuthorities());
     }
 
     @Override

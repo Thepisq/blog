@@ -6,9 +6,12 @@ import com.liushaonetwork.blog.app.service.BlogService;
 import com.liushaonetwork.blog.app.service.SysTopicService;
 import com.liushaonetwork.blog.app.utils.ResultUtil;
 import com.liushaonetwork.blog.app.utils.mapstruct.BlogTrans;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +26,13 @@ import static com.liushaonetwork.blog.app.utils.Constants.pageSize;
  * blog操作类
  */
 @EnableAsync
+@Slf4j
 @RestController
 public class BlogController {
     private final BlogService blogService;
     private final SysTopicService topicService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Autowired
     public BlogController(BlogService blogService, SysTopicService topicService) {
@@ -39,8 +45,12 @@ public class BlogController {
         BlogDTO blogDTO = blogService.oneBlog(id);
         String topicName = topicService.getById(blogDTO.getTopicId()).getTopicName();
         blogDTO.setTopicName(topicName);
+
+        //判断当前用户是否点过赞
+        blogDTO.setIsCurrentUserLikes(isCurrentUserLike(blogDTO.getId()));
+
         //增加点击量
-        blogService.blogClicks(id, request);
+        blogService.blogClicks(id, request, SecurityContextHolder.getContext().getAuthentication());
 
         return ResponseEntity.ok(BlogTrans.INSTANCE.dto2FtVo(blogDTO));
     }
@@ -51,6 +61,8 @@ public class BlogController {
         for (BlogDTO blog : blogs) {
             String topicName = topicService.getById(blog.getTopicId()).getTopicName();
             blog.setTopicName(topicName);
+            blog.setIsCurrentUserLikes(isCurrentUserLike(blog.getId()));
+            log.info("获取首页数据时，发现了当前用户给{" + blog.getTitle() + "}" + (blog.getIsCurrentUserLikes() ? "点了赞" : "没点赞") + blog.getIsCurrentUserLikes());
         }
         return ResponseEntity.ok(BlogTrans.INSTANCE.listDto2Vo(blogs));
     }
@@ -96,5 +108,22 @@ public class BlogController {
         MyUserDetails user = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         blogService.blogLikes(id, user.getId());
         return ResponseEntity.ok(ResultUtil.success());
+    }
+
+    private Boolean isCurrentUserLike(Long id) {
+        if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER"))) {
+            return false;
+        }
+        MyUserDetails user = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        boolean bool = false;
+        try {
+            String REDIS_KEY = "blogLikes:" + user.getId() + "_likes_" + id;
+            log.info("当前用户点赞key是否存在: " + redisTemplate.hasKey(REDIS_KEY) + "\n key:" + REDIS_KEY);
+            bool = redisTemplate.hasKey(REDIS_KEY);
+        } catch (Exception e) {
+            bool = false;
+        }
+        log.info("最终结果: " + bool);
+        return bool;
     }
 }

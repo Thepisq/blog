@@ -6,13 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.*;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
@@ -46,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final RequestMatcher reqMatcher;
 
     public JwtAuthenticationFilter() {
-        this.reqMatcher = new RequestHeaderRequestMatcher("Authorization");
+        this.reqMatcher = new RequestHeaderRequestMatcher(tokenInHeader);
     }
 
     @Override
@@ -59,12 +57,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         log.info("JwtAuthenticationFilter -> 获取token");
-        log.info("获取token: {" + tokenInHeader + ": " + request.getHeader(tokenInHeader) + "}");
-        if (!reqMatcher.matches(request) || StringUtils.startsWith(request.getHeader(tokenInHeader), tokenPrefix)) {
+        if (!reqMatcher.matches(request) || !StringUtils.startsWith(request.getHeader(tokenInHeader), tokenPrefix)) {
+            log.info(!reqMatcher.matches(request) ? "token获取不到" : "token格式不对");
             filterChain.doFilter(request, response);
             return;
         }
-        log.info("JwtFilter> \n  header: \n    " + request.getHeader(tokenInHeader));
+        log.info("token:{" + tokenInHeader + ": " + request.getHeader(tokenInHeader) + "}");
         String token = StringUtils.removeStart(request.getHeader(tokenInHeader), tokenPrefix);
         Authentication authResult = null;
         AuthenticationException authException = null;
@@ -81,6 +79,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         if (authResult != null) {
             successAuthenticationAction(request, response, filterChain, authResult);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(authResult.getPrincipal(), null, authResult.getAuthorities());
+            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(auth);
         } else if (!permissiveRequest(request)) {
             unsuccessAuthenticationAction(request, response, authException);
         }

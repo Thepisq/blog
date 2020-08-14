@@ -24,7 +24,7 @@ public class JwtAuthenticationConfigurer<T extends JwtAuthenticationConfigurer<T
     @Override
     public void configure(B http) throws Exception {
         log.info("经过了JwtAuthenticationConfigurer");
-        //在WebSecurityConfig.java用@Bean注入，下一行设置的Manager不会为null
+        //在WebSecurityConfig中用@Bean注入，下一行的AuthenticationManager就能取到
         authFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         JwtAuthenticationFilter filter = postProcess(authFilter);
         http.addFilterBefore(authFilter, LogoutFilter.class);

@@ -37,7 +37,6 @@ public class UsersController {
     @GetMapping("/users/page={pageNum}")
     public ResponseEntity<?> all(@PathVariable int pageNum) {
         List<UserFrontVO> userFrontVOList = UserTrans.INSTANCE.listDto2FtVo(userService.findAll(pageNum, pageSize));
-        userFrontVOList.forEach(userFrontVO -> System.out.println("{Controller} " + userFrontVO.toString()));
         return ResponseEntity.ok(userFrontVOList);
     }
 

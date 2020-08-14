@@ -27,20 +27,21 @@ function checkForExists() {
     } else if (patrn.test(input_username.val())) {
         validCheck(input_username, valid_username, _INVALID, "用户名不能有符号")
     } else if (input_username.val().trim().length >= _MIN_USERNAME_LENGTH) {
+        var validUsername = input_username.val().trim();
         $.ajax({
             type: 'POST',
             url: '/checkForUserExists',
             dataType: 'json',
-            data: 'username=' + input_username.val().trim(),
+            data: 'username=' + validUsername,
             beforeSend: function (xhr) {
                 // xhr.setRequestHeader(header, token)
             },
             success: function (data) {
                 //数据库查不到数据返回 0 ，否则返回1
                 if (data === 0) {
-                    validCheck(input_username, valid_username, _VALID, "用户名可以使用")
+                    validCheck(input_username, valid_username, _VALID, " '" + validUsername + "' 可以使用")
                 } else if (data === 1) {
-                    validCheck(input_username, valid_username, _INVALID, "用户名已存在")
+                    validCheck(input_username, valid_username, _INVALID, " '" + validUsername + "' 已存在")
                 }
 
             }

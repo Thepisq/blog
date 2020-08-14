@@ -55,7 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         .antMatchers("/", "/b/**").permitAll()
                         .antMatchers("/user/**").hasRole("USER")
                         .antMatchers("/blog/**", "/editor", "/topic/**").hasRole("BLOG")
-                        .antMatchers("/admin/**", "/users/**", "/blogs/**").hasRole("ADMIN"))
+                        .antMatchers("/admin/**", "/users/**", "/blogs/**").hasRole("ADMIN")
+                )
 
                 .formLogin(b -> b
                         .loginPage("/login")
@@ -67,7 +68,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //关闭csrf
                 .csrf().disable()
                 .sessionManagement().disable()
-                .cors().and()
+                .cors()
+                .and()
 
                 .apply(new JwtAuthenticationConfigurer<>())
                 .permissiveRequestUrls("/logout")
@@ -76,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 .headers().addHeaderWriter(new StaticHeadersWriter(Arrays.asList(
-                new Header("Access-control-Allow-Origin", "*"),
+                new Header("Access-Control-Allow-Origin", "*"),
                 new Header("Access-Control-Expose-Headers", tokenInHeader))))
                 .and()
 
@@ -132,9 +134,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     protected CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.addAllowedOrigin("*");
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "HEAD", "OPTION"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.addAllowedHeader("*");
         configuration.addExposedHeader(tokenInHeader);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

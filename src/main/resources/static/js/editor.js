@@ -95,6 +95,7 @@ $(document).ready(function () {
             }
         })
     })
+    //一开始不存在的组件的绑定事件
     $(document).on('click', ".tp-btn", function () {
         addTagSpan($(this))
     })

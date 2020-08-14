@@ -40,9 +40,6 @@ public class UserController {
     @GetMapping("/user/upgrade")
     ResponseEntity<?> upgradeUser() {
         MyUserDetails currentUser = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("当前用户不存在，请<a href='/login'>登录</a>");
-        }
         return ResponseEntity.ok(userService.upgrade(currentUser) == 1 ? "充值成功，请重新<a href='/login'>登录</a>" : "操作失败");
     }
 

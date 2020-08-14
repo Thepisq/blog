@@ -25,10 +25,17 @@ public interface FollowTrans {
         FollowFrontVO frontVO = new FollowFrontVO();
         frontVO.setUser(user);
 
-        int followersNum = JSON.parseArray((String) follow.getFollowers(), FollowUser.class).size();
+        int followersNum = 0;
+        if (null == follow.getFollowers()) {
+            followersNum = JSON.parseArray((String) follow.getFollowers(), FollowUser.class).size();
+        }
         frontVO.setFollowersNum(followersNum);
 
-        int followingNum = JSON.parseArray((String) follow.getFollowing(), FollowUser.class).size();
+
+        int followingNum = 0;
+        if (null == follow.getFollowing()) {
+            followingNum = JSON.parseArray((String) follow.getFollowing(), FollowUser.class).size();
+        }
         frontVO.setFollowingNum(followingNum);
 
         return frontVO;

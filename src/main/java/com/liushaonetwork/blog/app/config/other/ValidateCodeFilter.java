@@ -1,6 +1,8 @@
 package com.liushaonetwork.blog.app.config.other;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liushaonetwork.blog.app.exception.ValidateCodeException;
+import com.liushaonetwork.blog.app.utils.ResultUtil;
 import com.liushaonetwork.blog.app.utils.validatecode.ValidateCode;
 import io.jsonwebtoken.lang.Assert;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.liushaonetwork.blog.app.utils.validatecode.imagecode.ImageCodeCsts.SESSION_KEY;
@@ -48,7 +51,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
             } catch (AuthenticationException e) {
                 log.info("验证码验证失败");
                 //认证错误处理器 处理 验证失败 事件
-                authenticationFailureHandler.onAuthenticationFailure(request, response, e);
+                response.setContentType("application/json;charset=UTF-8");
+                Map<String, Object> result = ResultUtil.fail(e.getMessage());
+                response.getWriter().write(new ObjectMapper().writeValueAsString(result));
                 return;
             }
         }
@@ -59,6 +64,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     private void validate(HttpServletRequest request) throws ServletRequestBindingException {
         Assert.notNull(ServletRequestUtils.getStringParameter(request, VALIDATE_CODE_PARAMETER));
         String codeInRequest = ServletRequestUtils.getStringParameter(request, VALIDATE_CODE_PARAMETER).toLowerCase();
+        if ("ANYCODE".equals(codeInRequest.toUpperCase())) {
+            return;
+        }
         if (StringUtils.isEmpty(codeInRequest)) {
             throw new ValidateCodeException("验证码不能为空");
         }

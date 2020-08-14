@@ -1,5 +1,6 @@
 package com.liushaonetwork.blog.app.controller.front;
 
+import com.alibaba.fastjson.JSON;
 import com.liushaonetwork.blog.app.utils.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -38,9 +40,13 @@ public class HomeController {
 
     @GetMapping(value = {"/", "/index"})
     @PreAuthorize("hasAnyAuthority()")
-    public String index(Model model) {
+    public String index(Model model, HttpServletRequest request) {
         ResponseEntity<?> blogs = blogController.getBlogs(1);
         model.addAttribute("blogs", blogs.getBody());
+        model.addAttribute("blogJson", JSON.toJSONString(blogs.getBody()));
+        model.addAttribute("auth", JSON.toJSONString(SecurityContextHolder.getContext().getAuthentication()));
+        model.addAttribute("isuser", SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER")));
+        model.addAttribute("ip", HttpUtil.getIPAddr(request));
         return "index";
     }
 
