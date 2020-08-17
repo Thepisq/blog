@@ -11,4 +11,10 @@ public interface FollowService {
     List<FollowFrontVO> getFollowing(Long userId);
 
     List<FollowFrontVO> getAllByPage(Long userId, int page, int size);
+
+    int toggleFollowing(Long userId, Long followingUserId);
+
+    int toggleFollowers(Long followersUserId, Long userId);
+
+    boolean isCurrentUserFollowing(Long userId, Long authorId);
 }

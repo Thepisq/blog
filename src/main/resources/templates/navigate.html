@@ -15,7 +15,7 @@
         </span>
             </button>
             <div id="navbarSupportedContent" class="collapse navbar-collapse">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto font-weight-bold">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle " href="#" data-toggle="dropdown">
                             快捷操作
@@ -35,11 +35,19 @@
                         </a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="/user">用户页面</a>
-                            <a class="dropdown-item" href="/editor">写Blog</a>
+                            <a sec:authorize="hasRole('ROLE_BLOG')" class="dropdown-item" href="/editor">写Blog</a>
+                            <a sec:authorize="!hasRole('ROLE_BLOG')" class="dropdown-item"
+                               href="/editor">充值权限(升级到博主)</a>
                             <a class="dropdown-item" href="/user/follow_show">关注列表</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/logout">退出登录</a>
                         </div>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav mr-auto font-weight-bolder">
+                    <li sec:authorize="hasRole('ROLE_USER')" class="nav-item float-lg-right">
+                        <span class="navbar-text">欢迎</span> <span class="navbar-text" sec:authentication="name"></span>
                     </li>
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
@@ -102,7 +110,7 @@
     </script>
 </div>
 <div th:fragment="info">
-    <div class="p-2 m-auto">
+    <div class="p-2 m-2">
         <p>你的当前用户名是：</p>
         <p sec:authentication="name"></p>
         <p>你的权限是：</p>

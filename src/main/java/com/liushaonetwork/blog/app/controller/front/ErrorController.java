@@ -1,5 +1,6 @@
 package com.liushaonetwork.blog.app.controller.front;
 
+import com.liushaonetwork.blog.app.utils.ResultUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,7 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
         if (NO_AUTHORIZE_ERROR_MESSAGE.equals(request.getAttribute("javax.servlet.error.message"))) {
             msg = "<a href='/user/upgrade'>充值权限</a>";
         }
-        return ResponseEntity.status(response.getStatus()).body(
-                response.getStatus() + "error: \n" + request.getAttribute("javax.servlet.error.message") + "\n" + msg);
+        return ResponseEntity.ok(ResultUtil.fail("[" + response.getStatus() + "error]: \n" + request.getAttribute("javax.servlet.error.message") + "\n" + msg, response.getStatus()));
     }
 
     @Override

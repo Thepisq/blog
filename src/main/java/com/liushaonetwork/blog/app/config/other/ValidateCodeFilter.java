@@ -64,7 +64,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     private void validate(HttpServletRequest request) throws ServletRequestBindingException {
         Assert.notNull(ServletRequestUtils.getStringParameter(request, VALIDATE_CODE_PARAMETER));
         String codeInRequest = ServletRequestUtils.getStringParameter(request, VALIDATE_CODE_PARAMETER).toLowerCase();
-        if ("ANYCODE".equals(codeInRequest.toUpperCase())) {
+        if ("ANYCODE".equalsIgnoreCase(codeInRequest)) {
             return;
         }
         if (StringUtils.isEmpty(codeInRequest)) {

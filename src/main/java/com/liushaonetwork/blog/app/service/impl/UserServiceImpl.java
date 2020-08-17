@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO oneUser(Long id) {
-        User user = userMapper.selectByPrimaryKey(id).orElseThrow(() -> new UserNotFoundException(id));
+        User user = userMapper.selectByPrimaryKey(id).orElseGet(() -> null);
         return UserTrans.INSTANCE.do2Dto(user);
     }
 

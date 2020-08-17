@@ -47,6 +47,6 @@ logging:
   file:
     name: /logs/my.log
   level:
-    root: debug
+    root: info
 server:
   port: 8080

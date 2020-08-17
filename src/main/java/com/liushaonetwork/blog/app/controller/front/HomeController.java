@@ -60,8 +60,9 @@ public class HomeController {
     @GetMapping("/user/follow_show")
     public String myfollowing(Model model) {
         ResponseEntity<?> followings = followController.getMyAllFollow();
-        model.addAttribute("followings", followings.getBody());
-        if (((HashMap) followings.getBody()).containsKey("msg")) {
+        model.addAttribute("followings", ((HashMap) followings.getBody()).get("obj"));
+        String isEmpty = (String) ((HashMap) followings.getBody()).get("msg");
+        if (isEmpty != null) {
             model.addAttribute("emptyList", true);
         } else {
             model.addAttribute("emptyList", false);

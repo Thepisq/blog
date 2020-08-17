@@ -27,18 +27,40 @@
         .blog-likes svg {
             font-size: 24px;
         }
+
+        .blog-author-info {
+            max-width: 300px;
+        }
     </style>
 </head>
 
 <body>
 <div th:include="navigate::navbar"></div>
+
+
 <div class="container">
-    <div class="blog-container">
-        <div class="card container w-75">
+    <div class="blog-container container row">
+
+
+        <div class="col-3 float-lg-right" style="min-width: 300px">
+            <div class="blog-author-info float-lg-left card p-2 m-auto">
+                <img height="220"
+                     src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1597595120120&di=1750f6900584fdbf3165d70465611865&imgtype=0&src=http%3A%2F%2Fn.sinaimg.cn%2Fsinakd20200816ac%2F141%2Fw512h429%2F20200816%2F6b80-ixvrvsn9336893.jpg"
+                     class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5 class="card-title">√√√√√</h5>
+                    <p class="card-text">1关注 | 999+粉丝<br>5篇文章</p>
+                    <button class="btn btn-danger following-btn">关注</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card col" style="min-width: 700px">
             <div class="card-body">
                 <!--标题及作者信息等-->
                 <div class="card-header bg-light text-center">
                     <span class="blog-id d-none" th:text="${blog.id}"></span>
+                    <span class="blog-author-id d-none" th:text="${blog.authorId}"></span>
                     <h2 class="card-title" th:text="${blog.title}"></h2>
                     <div class="">
                         <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor"
@@ -89,6 +111,7 @@
 </div>
 <div th:include="navigate::advertisement"></div>
 <input sec:authorize="hasRole('ROLE_USER')" class="user-login" value="true" hidden/>
+<input sec:authorize="!hasRole('ROLE_USER')" class="user-login" value="false" hidden/>
 <script th:src="@{../js/blog/show.js}"></script>
 </body>
 </html>

@@ -17,9 +17,16 @@
 </head>
 <body>
 <div th:include="navigate::navbar"></div>
-<div class="container">
+<div class="container w-75">
     <div class="following-container row">
         <table th:if="${emptyList} eq false" class="table">
+            <thead>
+            <tr>
+                <th scope="col">用户名</th>
+                <th scope="col">关注</th>
+                <th scope="col">粉丝</th>
+            </tr>
+            </thead>
             <tbody th:each="f:${followings}">
             <tr>
                 <th th:text="${f.user.nickname}"></th>

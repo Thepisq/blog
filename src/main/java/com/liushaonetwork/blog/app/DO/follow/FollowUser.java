@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 /**
  * @author 13496
- * 在“关注”表中用于储存用户信息
+ * 在“follow”表中用于储存用户信息(转换为json)
  */
 @Data
 @NoArgsConstructor
